@@ -9,11 +9,14 @@ storage and the existing Core review/consent screens. Its GitHub behavior comes
 from that package; it adds no administration UI, Enterprise endpoint or GitLab support.
 
 This public repository is a developer reference and an unreleased development
-candidate. The implementation is under review in [Example PR #1](https://github.com/RocketsAreNostalgic/ran-booster-github-example/pull/1)
-on `feat/github-example`. Its companion changes are
+candidate. [Example PR #1](https://github.com/RocketsAreNostalgic/ran-booster-github-example/pull/1)
+is merged on `main`; this beta.19 source update is pending owner merge.
 [Provider PR #92](https://github.com/RocketsAreNostalgic/ran-booster-github-provider/pull/92)
-for isolated workflow storage and [Core PR #499](https://github.com/RocketsAreNostalgic/ran-booster/pull/499)
-for public native-update checkpoints, retaining Provider API 15. Follow
+is merged and published Provider beta.19 as immutable commit
+`a01497d6ebdd8df6ea155c2b2b873e36e2d0018b`. [Core PR #499](https://github.com/RocketsAreNostalgic/ran-booster/pull/499)
+is merged at `65369e79d281c11180303e5526c7c486abea6afd`, retaining Provider
+API 15 and public native-update checkpoints. Installed WordPress/database,
+native-update, and operator acceptance are underway. Follow
 [Provider issue #90](https://github.com/RocketsAreNostalgic/ran-booster-github-provider/issues/90)
 for delivery and acceptance status.
 
@@ -25,12 +28,11 @@ installable release or WordPress.org publication is available from this project.
 
 ## Construct and install
 
-Use PHP 8.2+, WordPress 7.0+ and a compatible Booster installation. During review,
-check out the implementation branch, install the tracked Composer lock, run the
-repository checks and build the plugin:
+Use PHP 8.2+, WordPress 7.0+ and a compatible Booster installation. Install the
+tracked Composer lock, run the repository checks, and build the plugin:
 
 ```sh
-git clone --branch feat/github-example https://github.com/RocketsAreNostalgic/ran-booster-github-example.git
+git clone https://github.com/RocketsAreNostalgic/ran-booster-github-example.git
 cd ran-booster-github-example
 composer install --no-interaction --prefer-dist --no-progress
 RAN_BOOSTER_CORE_PATH=/absolute/path/to/compatible-core composer check
@@ -52,27 +54,17 @@ incomplete. `Requires Plugins: ran-booster` supplies WordPress's dependency
 hint; runtime checks also require exact Provider API 15 and both native-update
 checkpoint methods. No Core container or private host service is accessed.
 
-The initial review assembly uses Core PR #499 at
-`a1e2561883d8f2a0124b09e6c30deb11dfa1048a` and Provider candidate
-`058b43375354ec8c0a1ff7105fd0e8898e2b545d`, updater beta 12 at
+The current qualification assembly uses merged Core #499 at
+`65369e79d281c11180303e5526c7c486abea6afd` and Provider beta.19 at
+`a01497d6ebdd8df6ea155c2b2b873e36e2d0018b`, updater beta 12 at
 `4e89b6c61ae57ebf02a74cea697ab0ee06d95f66` and updater-support beta 4 at
-`357db930b407941bd19a9e890c925d3d16ae9b15`. The tracked lock and
-qualification map contain the complete dependency references and source hashes.
-Source/archive evidence identifies the exact assembled Core and example heads;
-a changed source tuple requires fresh qualification.
+`357db930b407941bd19a9e890c925d3d16ae9b15`. The root requirement permits
+`~1.0.0-beta.19`; the committed lock and qualification map bind the exact
+Provider publication and complete dependency source hashes. A changed source
+tuple requires fresh qualification.
 
-The root Composer policy deliberately accepts an explicit development branch
-of the Provider package and pins its exact candidate reference in the lock.
-Stable versions are preferred for other dependencies. This keeps unmerged
-review candidates reproducible without inventing a release or floating to
-unqualified source. Replace the candidate constraint with a reviewed immutable
-release only through a separately qualified dependency update. No dependency
-publishing is performed by these commands.
-
-Core's normal archive verifier requires versioned dependencies and rejects this
-development branch pin. Core PR #499 therefore has a delivery blocker until a
-separately authorized Provider release permits an ordinary version pin and fresh
-archive/database qualification. Keep that packaging safeguard intact.
+Stable versions are preferred for other dependencies. No dependency publishing
+is performed by these commands.
 
 ## Identity and approval
 
@@ -148,7 +140,7 @@ public bootstrap and existing runtime arbitration.
 
 Core reads the bundled Provider's passive compatibility contract early in
 bootstrap. Therefore the supported assembled Core must bundle the same
-qualified Provider candidate, in addition to supplying the new context methods.
+qualified Provider beta.19 bytes, in addition to supplying the new context methods.
 An older Core copy that preloads the pre-namespace factory is an explicit
 negative case, regardless of which plugin file loads first. Do not assume that
 installing a second physical Composer package replaces classes PHP has already

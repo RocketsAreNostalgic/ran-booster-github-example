@@ -2,7 +2,7 @@
     "schema": 1,
     "packages": {
         "ran/booster-github-provider": {
-            "reference": "058b43375354ec8c0a1ff7105fd0e8898e2b545d",
+            "reference": "a01497d6ebdd8df6ea155c2b2b873e36e2d0018b",
             "files": {
                 "composer.json": "62b8491d23463cbdae39dd9a6ea83cb3aee0fb42ee793e15010d8f123a4547e5",
                 "src/CredentialPolicy.php": "e3fbf4784fe4082b423d2cdc7fea70ffe85e9349410e8f75cb9a638619f4a4af",
@@ -26,7 +26,7 @@
                 "src/ReleaseDeployments/WorkflowAssistance/WorkflowAssistanceState.php": "2b895589d5e0a154f546924f8c3801a1174e03516fd94f80147190d40a1ea49d",
                 "src/RepositoryBrowser.php": "c63177bb84070fa2296375ce87bc2ee0a9e9d60a6d87dca94663d3b35b00dce6",
                 "src/RepositoryWebhookClient.php": "3197b7fd2bf25f3b9a462aea01c5e148b0b1b5f83aa75f571acaaa3a5aebed04",
-                "src/WebhookNormalizer.php": "7c980bea9af957b83ba1f34c427a7eb4280489bf0abe670163e19bd6088bd0a9",
+                "src/WebhookNormalizer.php": "c875982bcdd4981a073bf50984b94b66b5b4db16e8ec2b7f5ace489583cd27da",
                 "src/WebhookPolicy.php": "0d9e96ec539c97a66022b444a3b90e8a2f34fc62baec6a6e2058bdb1b344e552"
             }
         },
