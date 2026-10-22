@@ -1,0 +1,6 @@
+/vendor/
+/dist/
+/.phpunit.cache/
+/.phpstan/
+*.log
+.DS_Store

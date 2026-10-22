@@ -1,0 +1,17 @@
+includes:
+	- vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+	level: 8
+	treatPhpDocTypesAsCertain: false
+	paths:
+		- .
+	scanDirectories:
+		- %env.RAN_BOOSTER_CORE_PATH%/tests
+		- %env.RAN_BOOSTER_CORE_PATH%/RAN
+	excludePaths:
+		analyseAndScan:
+			- vendor/*
+			- dist/*
+			- .git/*
+			- .phpstan/*
+			- .phpunit.cache/*

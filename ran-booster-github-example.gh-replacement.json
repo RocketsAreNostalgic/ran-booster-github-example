@@ -1,0 +1,28 @@
+{
+  "plugin_basename": "ran-booster-github-example/ran-booster-github-example.php",
+  "implementation_id": "ran/booster-github-example",
+  "compatibility_revision": "1",
+  "provider_api_version": 15,
+  "api_credential_formats": [
+    "github-classic-pat-v1",
+    "github-fine-grained-pat-v1"
+  ],
+  "webhook_signing_format": "github-hmac-sha256-v1",
+  "facets": [
+    "RAN\\RepositoryProvider\\ProviderCredentialPolicySupplier",
+    "RAN\\RepositoryProvider\\CredentialValidator",
+    "RAN\\RepositoryProvider\\RepositoryBrowser",
+    "RAN\\RepositoryProvider\\CredentialedPublicRepositoryBrowser",
+    "RAN\\RepositoryProvider\\WebhookNormalizer",
+    "RAN\\RepositoryProvider\\RepositoryWebhookFitness",
+    "RAN\\RepositoryProvider\\RepositoryWebhookManagement",
+    "RAN\\RepositoryProvider\\RepositoryWebhookSettingsLink",
+    "RAN\\RepositoryProvider\\RepositoryPathInspector",
+    "RAN\\RepositoryProvider\\RepositoryReleaseCandidateListing",
+    "RAN\\RepositoryProvider\\RepositoryReleaseInspector",
+    "RAN\\RepositoryProvider\\RepositoryReleaseAcquirer",
+    "RAN\\RepositoryProvider\\RepositoryReleaseMetadata",
+    "RAN\\RepositoryProvider\\RepositoryReleaseNativeTargets",
+    "RAN\\RepositoryProvider\\RepositoryReleaseWorkflowManagementV4"
+  ]
+}
