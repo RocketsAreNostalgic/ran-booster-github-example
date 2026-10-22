@@ -1,0 +1,84 @@
+{
+    "schema": 1,
+    "packages": {
+        "ran/booster-github-provider": {
+            "reference": "058b43375354ec8c0a1ff7105fd0e8898e2b545d",
+            "files": {
+                "composer.json": "62b8491d23463cbdae39dd9a6ea83cb3aee0fb42ee793e15010d8f123a4547e5",
+                "src/CredentialPolicy.php": "e3fbf4784fe4082b423d2cdc7fea70ffe85e9349410e8f75cb9a638619f4a4af",
+                "src/Diagnostics.php": "64a26b3b669dadc1f17100fe6611d777e2b92313f97693d418145d408ee23d13",
+                "src/GitHubProvider.php": "70e638ef6103b91053643093f4a840dc308a2930e87b83d62993be78d95d5c7d",
+                "src/GitHubReleaseArtifact.php": "e5491a561884a7cbbc9cbf693225f23fc7c26c5fdefc7a79d29d72372267acd8",
+                "src/GitHubReleaseNativeTarget.php": "6a399cb6d4a717b01b8c1285d303511fe9e164564905383cacfaf2d054baf7e4",
+                "src/ReleaseDeployments/WorkflowAssistance/GitHubRepositoryClient.php": "56f5f3631e9cb37b526156c7778fa499cbef7fd03a31d45b854fde6ef5b40c83",
+                "src/ReleaseDeployments/WorkflowAssistance/GitHubRepositoryReleaseWorkflow.php": "914563d0393a77dcef6aa297f9242cd694d00fbb74f87e4e844b96f4db3df582",
+                "src/ReleaseDeployments/WorkflowAssistance/InitialReleaseBundle.php": "4d07caee3b35986baabbb1358d91a1498781f363985f5074c3a214fb9e0963a8",
+                "src/ReleaseDeployments/WorkflowAssistance/RepositorySnapshot.php": "328e5342a7c6e42604fde0978a593b6d962e3af20e333df587cd0da2fc08b86d",
+                "src/ReleaseDeployments/WorkflowAssistance/SetupRecordStore.php": "ac4cea17683d2a78f17b311a32cd4aa2d911cca06ebcd7c58db1eacbb8644a8a",
+                "src/ReleaseDeployments/WorkflowAssistance/SourceReadyAssessment.php": "ec3df24592308561f24f27c12d6d418c02d97bdd8510f4cd5c94b24aea3aefa1",
+                "src/ReleaseDeployments/WorkflowAssistance/SourceReadyAssessor.php": "f6324442eae3093da49f6e07d94aaefe6d067e08c33d0989fa6878835861fb2d",
+                "src/ReleaseDeployments/WorkflowAssistance/StarterGuidance.php": "536e939a2cd8bb2ce2b226a4082870264ebdfb3be9873a1a559a1b25ef87f1ff",
+                "src/ReleaseDeployments/WorkflowAssistance/StarterOrigin.php": "6914fc38483490bae53c0d8e7ccf1f07962e33934d85f5f1863f43e62892e7a7",
+                "src/ReleaseDeployments/WorkflowAssistance/StarterSecurityCheck.php": "da1e612d55de3d828632c7fe69b92b66d0a0153409da4be8e3c0d039a5d36f11",
+                "src/ReleaseDeployments/WorkflowAssistance/TemplatePack.php": "ae1b6cf044c993585e6fb40d062b9e0727a6509fcdfdba1ebc6bd7f190e815df",
+                "src/ReleaseDeployments/WorkflowAssistance/TemplatePackRepositoryClient.php": "ee034cec58f706651384aba64a70912c1cd9bd10f5338636928011358f047cba",
+                "src/ReleaseDeployments/WorkflowAssistance/WorkflowApplicationCoordinator.php": "ef644553b027450c0acc903aaa1a9da25c469320d4f4ee441cf72e2f5b639d59",
+                "src/ReleaseDeployments/WorkflowAssistance/WorkflowAssistanceState.php": "2b895589d5e0a154f546924f8c3801a1174e03516fd94f80147190d40a1ea49d",
+                "src/RepositoryBrowser.php": "c63177bb84070fa2296375ce87bc2ee0a9e9d60a6d87dca94663d3b35b00dce6",
+                "src/RepositoryWebhookClient.php": "3197b7fd2bf25f3b9a462aea01c5e148b0b1b5f83aa75f571acaaa3a5aebed04",
+                "src/WebhookNormalizer.php": "7c980bea9af957b83ba1f34c427a7eb4280489bf0abe670163e19bd6088bd0a9",
+                "src/WebhookPolicy.php": "0d9e96ec539c97a66022b444a3b90e8a2f34fc62baec6a6e2058bdb1b344e552"
+            }
+        },
+        "ran/wp-release-updater": {
+            "reference": "4e89b6c61ae57ebf02a74cea697ab0ee06d95f66",
+            "files": {
+                "bootstrap.php": "ec505c96d31c8ec834113839c994d15042c40e3011c3666641b18e5ff9ff90ec",
+                "composer.json": "f197fa964b8b7979d03c363f8231c7be2efc33652f7b7f3d98b449e2ed3bee72",
+                "runtime-copy.json": "cc7e461bd5a9ffa03877cf72af91ad0d6fbe7a932b36d71394a19b59e21d5b77",
+                "runtime.php": "9311ac4ff23c6125c7c252f51029c2df674d24a46602f531ecf28a77933c9003",
+                "src/Archive/ArchiveScanResult.php": "470cd60014392a820b1c672f3570c02d5ee2f4d7a18e5638fee2bee6e11aff29",
+                "src/Archive/ArchiveScanner.php": "69d477a9175fcd1f5839b177dd2137a974760dce33d5359034166e72a2a489fb",
+                "src/Archive/PackageIdentityValidator.php": "dca01c2b17d7f8796fc46680c64bcb147a6edc8ffd8ae28993dbfa4a2181b606",
+                "src/Archive/TemporaryArtifact.php": "1806dfd2a2b2cc1586b7509b0bc0a002d59ad8e4f4ad0e79d96ba998522ae2e0",
+                "src/Archive/ValidatedPackage.php": "b309f91e6b75759d3f5b457b8e2cfbf2dc5d079e301aac69e83847f017c3e814",
+                "src/Contract/AcquisitionReceipt.php": "2f1bd8a5128361c460b64016964bfab5126920b02b54448296cad2ce88fab55e",
+                "src/Contract/BindingRecord.php": "18c5ac00c486f5cd976aa52211d1273f2c199a74877b2b9b539bd1508360a721",
+                "src/Contract/CanonicalUpdateUri.php": "84887a4f1afb2db081ab84c9d4b42d55f17bcc6a52300085365739dc6e9ba208",
+                "src/Contract/IdentityDescriptor.php": "fce2b9f7ef1ff8c9303a6797d18c1a7fed927db93c629e3cc5a9749f83ad8ef2",
+                "src/Contract/ReleaseAdapter.php": "5d30c0436014879237a9e77f4526e2dda6ea793e4c5c1735929c2472ecef4fb7",
+                "src/Contract/ReleaseVersion.php": "35be4c7a2c9b4153d27c91909b7d770af6f10ab6969590b7e5b6401b767ff63a",
+                "src/Dependency/ArchiveSafety.php": "f029576bbc3c7ba37804122d0ac3db8169839bf9b2d1e5bf03fb4e86749c8f97",
+                "src/Provider/GitHub/GitHubApiClient.php": "0ddaca0d2ad4249b42f5f852beb27219054dc42163ebd0a8668870c67d2adc6b",
+                "src/Provider/GitHub/GitHubArtifactCustodyFailure.php": "5a4f077103ef4887ac2741a396fd93373795d0e8be2280b79e5fed6874f8797a",
+                "src/Provider/GitHub/GitHubArtifactStore.php": "be8379eba9ed45f353b2505936075f0f5c2be18dc8618d0c2c421c497c9bea7d",
+                "src/Provider/GitHub/GitHubCredentialResolver.php": "3f124f73ad09e948227cea7a109a601a1d8778508e74ac7badd41c9dce308825",
+                "src/Provider/GitHub/GitHubReleaseAdapter.php": "145cbc80260bb45bc9ad7b1e812e08f08c9f5d934fcfdbca2ee3cdd870359466",
+                "src/Provider/GitHub/GitHubReleaseReadUnavailable.php": "3e799bc92d3572fcb9b74f4decbc76a91ed9cd16fe5091e8a0febebbf508ec7a",
+                "src/Provider/GitHub/GitHubReleaseService.php": "dce6de34c8c1ad91e69ae1bfecc6ef1281d74377d4a2bca2b06292ff9a882765",
+                "src/Provider/GitHub/ProspectiveReleaseInspection.php": "2217112929b73a6f4c073afe63eec0152dad27316f7f1da143d9de547ae3a6c2",
+                "src/Runtime/ReleaseFailure.php": "a425e355bf530f467d7407ecc44c6ddd2ac0d337e2a8dd2add42db05e89519e6",
+                "src/Runtime/ReleaseSource.php": "ead977d07c04d25bdad0b2e70535b4ea725b876ebc9dab01838a02237f4f1ce9",
+                "src/Runtime/RequestBroker.php": "d5ce99b50079a3facaa11cc5361c875e7e94702f4d32e07e00dcfd0bfe19de46",
+                "src/Runtime/RequestProtocolValidator.php": "7d5752c844e81e6efa4b2abcb32061211a172a0325675387513fea889220587b",
+                "src/Runtime/RuntimeCopySelector.php": "34cf1a2aaa3d49df4d5da5bfde42b6424d1830b2503327117c68ede174cb82be",
+                "src/Runtime/SelectedRuntimeState.php": "d327df5d80586cc73e2ea024997cbbe9cbe4e1aff301ff31bebbe67f71127291",
+                "src/WordPress/BindingFenceCoordinator.php": "b2ff5a9e438d8ea7820873cee24f55acc18a2dd87ae45b6527d667a89d6777fd",
+                "src/WordPress/BindingState.php": "b83e2a241eb2e0bbe7954ccb30b46d0c1a384d0fe0186868bcea82dc68a11bc0",
+                "src/WordPress/InstalledPackageResolver.php": "ac2a4eb483ae0f8cab321e8d10231397028d01a3d39cbdcb3ed9a7d44d1454a9",
+                "src/WordPress/NativePackageUpdater.php": "bb22aacdb84f01ecb02705d5e27dd8fd087e47d6b8804def44d43d71559e6d48",
+                "src/WordPress/OwnedArchiveStore.php": "46b10d728b2412597ef308209b83b542dbde89176e611e476cc061a9c236c2cf",
+                "src/WordPress/PendingInstallState.php": "d792c27e1664dcd6d5e89c24bd6858089a1639ee7b367e460f15799e704a1592",
+                "src/WordPress/StagedPackageManifest.php": "e6ffd0e33f0f468b612a1dcb162bb0e116bf884ff9e4709471b924cbc3bb3b02"
+            }
+        },
+        "ran/updater-support": {
+            "reference": "357db930b407941bd19a9e890c925d3d16ae9b15",
+            "files": {
+                "composer.json": "070f7922cdfd17c87b8af397ce61084a98663ab7165087823d005d79c72c8564",
+                "src/ArchiveSafety.php": "731baa8dfd09e213dd0ba97e7dc2cc51e072d40ca70aac6824da3f23e2fbee73",
+                "src/RepositoryRelativePath.php": "17dfa646923151d7624c36bab5335d940902f40a8e9a5c5763bdac6c3201fa7b"
+            }
+        }
+    }
+}
