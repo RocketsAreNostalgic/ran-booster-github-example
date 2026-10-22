@@ -8,19 +8,30 @@ implementation, with the same provider code `gh`, separate private workflow
 storage and the existing Core review/consent screens. Its GitHub behavior comes
 from that package; it adds no administration UI, Enterprise endpoint or GitLab support.
 
-This is a development candidate. It requires the reviewed Core change that
-adds public native-update checkpoints while retaining Provider API 15, and the
-locked Provider namespace candidate. Published Core without those checkpoints
-is refused. Source preparation, a built ZIP and passing deterministic checks do
-not establish completed installed or operator acceptance. There is no release,
-WordPress.org publication or retained-site deployment implied by this example.
+This public repository is a developer reference and an unreleased development
+candidate. The implementation is under review in [Example PR #1](https://github.com/RocketsAreNostalgic/ran-booster-github-example/pull/1)
+on `feat/github-example`. Its companion changes are
+[Provider PR #92](https://github.com/RocketsAreNostalgic/ran-booster-github-provider/pull/92)
+for isolated workflow storage and [Core PR #499](https://github.com/RocketsAreNostalgic/ran-booster/pull/499)
+for public native-update checkpoints, retaining Provider API 15. Follow
+[Provider issue #90](https://github.com/RocketsAreNostalgic/ran-booster-github-provider/issues/90)
+for delivery and acceptance status.
+
+The example requires those Core checkpoints and the qualified Provider
+namespace candidate. Unsupported Core installations are refused. Source and
+archive checks are complete for the recorded review assembly; installed
+WordPress/database, native-update and operator acceptance remain open. No
+installable release or WordPress.org publication is available from this project.
 
 ## Construct and install
 
-Use PHP 8.2+, WordPress 7.0+ and a compatible Booster installation. Install the
-tracked Composer lock, run the repository checks and build the plugin:
+Use PHP 8.2+, WordPress 7.0+ and a compatible Booster installation. During review,
+check out the implementation branch, install the tracked Composer lock, run the
+repository checks and build the plugin:
 
 ```sh
+git clone --branch feat/github-example https://github.com/RocketsAreNostalgic/ran-booster-github-example.git
+cd ran-booster-github-example
 composer install --no-interaction --prefer-dist --no-progress
 RAN_BOOSTER_CORE_PATH=/absolute/path/to/compatible-core composer check
 composer build
@@ -41,12 +52,14 @@ incomplete. `Requires Plugins: ran-booster` supplies WordPress's dependency
 hint; runtime checks also require exact Provider API 15 and both native-update
 checkpoint methods. No Core container or private host service is accessed.
 
-The initial review assembly uses Core PR #499 and Provider candidate
+The initial review assembly uses Core PR #499 at
+`a1e2561883d8f2a0124b09e6c30deb11dfa1048a` and Provider candidate
 `058b43375354ec8c0a1ff7105fd0e8898e2b545d`, updater beta 12 at
 `4e89b6c61ae57ebf02a74cea697ab0ee06d95f66` and updater-support beta 4 at
 `357db930b407941bd19a9e890c925d3d16ae9b15`. The tracked lock and
-qualification map contain the complete dependency references and source hashes;
-the installed test record identifies the exact assembled Core and example heads.
+qualification map contain the complete dependency references and source hashes.
+Source/archive evidence identifies the exact assembled Core and example heads;
+a changed source tuple requires fresh qualification.
 
 The root Composer policy deliberately accepts an explicit development branch
 of the Provider package and pins its exact candidate reference in the lock.
@@ -57,9 +70,9 @@ release only through a separately qualified dependency update. No dependency
 publishing is performed by these commands.
 
 Core's normal archive verifier requires versioned dependencies and rejects this
-development branch pin. Core PR #499 therefore remains a draft delivery hold
-until a separately authorized Provider release permits an ordinary version pin
-and fresh archive/database qualification. Keep that packaging safeguard intact.
+development branch pin. Core PR #499 therefore has a delivery blocker until a
+separately authorized Provider release permits an ordinary version pin and fresh
+archive/database qualification. Keep that packaging safeguard intact.
 
 ## Identity and approval
 
