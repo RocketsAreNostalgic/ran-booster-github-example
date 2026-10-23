@@ -20,6 +20,13 @@ with zipfile.ZipFile(archive) as bundle:
     installed = json.loads(bundle.read('ran-booster-github-example/vendor/composer/installed.json'))
     assert {p['name'] for p in installed['packages']} == {'ran/booster-github-provider', 'ran/wp-release-updater', 'ran/updater-support'}
     assert installed['dev'] is False
+    catalog = 'languages/ran-booster-github-provider.pot'
+    catalog_name = 'ran-booster-github-example/vendor/ran/booster-github-provider/' + catalog
+    qualification = json.loads(bundle.read('ran-booster-github-example/qualified-provider.json'))
+    expected_catalog_hash = qualification['packages']['ran/booster-github-provider']['files'][catalog]
+    assert catalog_name in names
+    assert hashlib.sha256(bundle.read(catalog_name)).hexdigest() == expected_catalog_hash
+    assert b'X-Domain: ran-booster-github-provider' in bundle.read(catalog_name)
     passive = r"""
 define('ABSPATH', '/synthetic-only/');
 $GLOBALS['hooks'] = [];

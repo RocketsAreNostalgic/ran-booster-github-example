@@ -2,14 +2,17 @@
     "schema": 1,
     "packages": {
         "ran/booster-github-provider": {
-            "reference": "a01497d6ebdd8df6ea155c2b2b873e36e2d0018b",
+            "reference": "1e08b01eda61950dbdd3f119ea23fdf2a5dfb99d",
             "files": {
                 "composer.json": "62b8491d23463cbdae39dd9a6ea83cb3aee0fb42ee793e15010d8f123a4547e5",
+                "languages/ran-booster-github-provider.pot": "e111365809cce01facca45f168fa307f3881c875f5e559843f8b4095c211fc48",
                 "src/CredentialPolicy.php": "e3fbf4784fe4082b423d2cdc7fea70ffe85e9349410e8f75cb9a638619f4a4af",
                 "src/Diagnostics.php": "64a26b3b669dadc1f17100fe6611d777e2b92313f97693d418145d408ee23d13",
-                "src/GitHubProvider.php": "70e638ef6103b91053643093f4a840dc308a2930e87b83d62993be78d95d5c7d",
+                "src/GitHubDocumentation.php": "e2e81c05364f51fc4fbe70b6a910744cb8ddc5cda581cd843c3de70b6ca0d9de",
+                "src/GitHubProvider.php": "9e3601be16cb799435737edfcb3261e173efeef6a530f18a1999ef07e65a77f2",
                 "src/GitHubReleaseArtifact.php": "e5491a561884a7cbbc9cbf693225f23fc7c26c5fdefc7a79d29d72372267acd8",
                 "src/GitHubReleaseNativeTarget.php": "6a399cb6d4a717b01b8c1285d303511fe9e164564905383cacfaf2d054baf7e4",
+                "src/GitHubTranslations.php": "7d666f633720ea4e8aa26a0e70915b8dcbc3c788c153550c79dc2907447d78ca",
                 "src/ReleaseDeployments/WorkflowAssistance/GitHubRepositoryClient.php": "56f5f3631e9cb37b526156c7778fa499cbef7fd03a31d45b854fde6ef5b40c83",
                 "src/ReleaseDeployments/WorkflowAssistance/GitHubRepositoryReleaseWorkflow.php": "914563d0393a77dcef6aa297f9242cd694d00fbb74f87e4e844b96f4db3df582",
                 "src/ReleaseDeployments/WorkflowAssistance/InitialReleaseBundle.php": "4d07caee3b35986baabbb1358d91a1498781f363985f5074c3a214fb9e0963a8",

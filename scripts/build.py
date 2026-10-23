@@ -53,6 +53,8 @@ def build() -> Path:
         for name in RUNTIME:
             package = stage / 'vendor' / name
             keep = {'src', 'composer.json', 'LICENSE', 'LICENSE.md', 'LICENSE.txt'}
+            if name == 'ran/booster-github-provider':
+                keep.add('languages')
             if name == 'ran/wp-release-updater':
                 keep.update({'bootstrap.php', 'runtime.php', 'runtime-copy.json'})
             for child in package.iterdir():

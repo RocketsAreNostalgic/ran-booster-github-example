@@ -43,7 +43,7 @@ second records its outcome. The plugin does not use a private Booster container.
 ## Build and check a local ZIP
 
 Use PHP 8.2 or newer, WordPress 7.0 or newer, and a compatible Booster build
-with Provider beta.19, Provider API 15, and the native-update checkpoints. Booster
+with Provider beta.20, Provider API 15, and the native-update checkpoints. Booster
 and Example must contain matching Provider files. PHP may load Booster's copy
 first; Example allows that reuse only when those files match the dependency file
 hashes it records.
