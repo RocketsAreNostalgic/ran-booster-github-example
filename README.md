@@ -8,23 +8,19 @@ implementation, with the same provider code `gh`, separate private workflow
 storage and the existing Core review/consent screens. Its GitHub behavior comes
 from that package; it adds no administration UI, Enterprise endpoint or GitLab support.
 
-This public repository is a developer reference and an unreleased development
-candidate. [Example PR #1](https://github.com/RocketsAreNostalgic/ran-booster-github-example/pull/1)
-is merged on `main`; this beta.19 source update is pending owner merge.
-[Provider PR #92](https://github.com/RocketsAreNostalgic/ran-booster-github-provider/pull/92)
-is merged and published Provider beta.19 as immutable commit
-`a01497d6ebdd8df6ea155c2b2b873e36e2d0018b`. [Core PR #499](https://github.com/RocketsAreNostalgic/ran-booster/pull/499)
-is merged at `65369e79d281c11180303e5526c7c486abea6afd`, retaining Provider
-API 15 and public native-update checkpoints. Installed WordPress/database,
-native-update, and operator acceptance are underway. Follow
-[Provider issue #90](https://github.com/RocketsAreNostalgic/ran-booster-github-provider/issues/90)
-for delivery and acceptance status.
+This public repository is a developer reference and has no installable release
+or WordPress.org publication. Provider PR #93 published beta.19 at immutable
+commit `a01497d6ebdd8df6ea155c2b2b873e36e2d0018b`; Example PR #3 merged this
+source at `766cfa1cfb408b9381e119b30112eff54e7b6fb0`. The accepted Core build is
+`b026542da75d88a36eb78ca6b9517ca7bb69433e`, an unreleased merged-main CI build
+from run `39915421217` that retains the beta.37 header.
 
-The example requires those Core checkpoints and the qualified Provider
-namespace candidate. Unsupported Core installations are refused. Source and
-archive checks are complete for the recorded review assembly; installed
-WordPress/database, native-update and operator acceptance remain open. No
-installable release or WordPress.org publication is available from this project.
+The bounded W4 and W5 composition, operator, and uninstall scopes are complete
+for [Provider issue #90](https://github.com/RocketsAreNostalgic/ran-booster-github-provider/issues/90).
+That evidence does not publish a new Core or Example release, and it does not
+make a newly built ZIP from this checkout installed or accepted. Unsupported
+Core installations are refused; changed source or archive bytes need their own
+qualification.
 
 ## Construct and install
 
@@ -54,14 +50,14 @@ incomplete. `Requires Plugins: ran-booster` supplies WordPress's dependency
 hint; runtime checks also require exact Provider API 15 and both native-update
 checkpoint methods. No Core container or private host service is accessed.
 
-The current qualification assembly uses merged Core #499 at
-`65369e79d281c11180303e5526c7c486abea6afd` and Provider beta.19 at
+The recorded qualification assembly uses merged Core
+`b026542da75d88a36eb78ca6b9517ca7bb69433e` and Provider beta.19 at
 `a01497d6ebdd8df6ea155c2b2b873e36e2d0018b`, updater beta 12 at
 `4e89b6c61ae57ebf02a74cea697ab0ee06d95f66` and updater-support beta 4 at
 `357db930b407941bd19a9e890c925d3d16ae9b15`. The root requirement permits
 `~1.0.0-beta.19`; the committed lock and qualification map bind the exact
-Provider publication and complete dependency source hashes. A changed source
-tuple requires fresh qualification.
+Provider publication and complete dependency source hashes. A changed source or
+archive tuple requires fresh qualification.
 
 Stable versions are preferred for other dependencies. No dependency publishing
 is performed by these commands.
@@ -139,36 +135,48 @@ no runtime broker or class-scoping system. The updater continues to use its own
 public bootstrap and existing runtime arbitration.
 
 Core reads the bundled Provider's passive compatibility contract early in
-bootstrap. Therefore the supported assembled Core must bundle the same
-qualified Provider beta.19 bytes, in addition to supplying the new context methods.
-An older Core copy that preloads the pre-namespace factory is an explicit
-negative case, regardless of which plugin file loads first. Do not assume that
-installing a second physical Composer package replaces classes PHP has already
-loaded. Exact Core/provider/example/updater revisions and loaded implementation
-paths/digests belong in qualification evidence.
+bootstrap. A compatible assembly must therefore bundle the same qualified
+Provider beta.19 bytes and provide the required context methods. The accepted
+Core-first selection used Core's qualified physical Provider copy; the Example
+copy was accepted because its qualified runtime bytes were equal. That records
+loaded-copy attribution for the accepted assembly. It does not promise that the
+Example vendor tree is the physical origin of loaded Provider classes. An older
+Core copy that preloads the pre-namespace factory is an explicit negative case,
+regardless of which plugin file loads first. Do not assume that installing a
+second physical Composer package replaces classes PHP has already loaded. Exact
+Core/provider/example/updater revisions and loaded implementation paths/digests
+belong in qualification evidence.
 
 ## Transporter limits
 
-With a compatible destination provider already available, Transporter can
-reconstruct its supported managed-package data and explicitly selected supported
-Core-held credential data through that destination provider. It does not install
-this example implicitly. Missing capabilities, unavailable providers and
-incompatible/inaccessible credentials block the affected operation; Disabled
-defaults and fresh selection/credential checks remain.
+`tests/TransporterTest.php` covers a controlled composition with synthetic
+repository responses. It exercises supported managed-package data and explicitly
+selected supported Core-held credential data through an already available
+destination provider. It does not install this example implicitly. Missing
+capabilities, unavailable providers and incompatible/inaccessible credentials
+block the affected operation; Disabled defaults and fresh selection/credential
+checks remain.
 
 Private setup records, preview keys/indexes, locks, private external credentials
 and remote webhook configuration are excluded. This example adds no Blueprint
-version, provider-option scanner or private-state import channel.
+version, provider-option scanner or private-state import channel. This is not
+new live remote-delivery evidence and does not migrate private workflow state.
 
 ## Adapt the example
 
-1. Keep `gh` only when implementing the supported GitHub replacement contract.
-2. Choose your own plugin basename and replacement implementation identity.
-3. Choose a distinct stable workflow namespace and own only its cleanup.
-4. Declare the actual credential/signing formats and aggregate capabilities.
-5. Retain delayed construction, fresh guards and both native-update checkpoints.
-6. Lock and qualify dependency copies, both plugin orders and the built archive.
-7. Prove explicit consent, no fallback, switching, return and disposable uninstall.
+Use these concrete touchpoints when creating a separate replacement. They are
+coupled: changing the visible identity without the matching runtime and archive
+inputs creates an invalid assembly.
+
+| Concern | Files and required alignment |
+| --- | --- |
+| Main identity | Rename `ran-booster-github-example.php`; update its WordPress header and the adjacent `ran-booster-github-example.gh-replacement.json` `plugin_basename` and distinct `implementation_id` together. Keep `gh` only for the supported GitHub replacement contract, and declare the actual credential/signing formats and aggregate capabilities. |
+| Runtime identity and storage | Update `src/Plugin.php`: `Plugin::BASENAME` must match the main file, and `Plugin::WORKFLOW_NAMESPACE` must be distinct and stable. The namespace owns only its own workflow records, previews, locks, and cleanup. |
+| Autoload and package root | Update `composer.json` package identity, `autoload.psr-4`, and `autoload-dev.psr-4` when the PHP namespace changes. Update the main-file bootstrap, `uninstall.php`, and test namespace references to that same namespace. Regenerate and commit the matching lock and qualification map. |
+| Uninstall boundary | Keep `uninstall.php` delegating to the plugin's guarded cleanup. Update the exact basename and resolved `WP_PLUGIN_DIR` path checks in `Plugin::uninstall()` with the renamed main file; retain the symlink refusal. |
+| Build inputs | Update `scripts/build.py` `SLUG` and its fixed input list together: `composer.json`, `composer.lock`, the main file, `uninstall.php`, replacement manifest, `qualified-provider.json`, `README.md`, and `LICENSE`. |
+| Dependency qualification | After lock changes, run `php scripts/qualify-dependencies.php` to regenerate `qualified-provider.json`, then run `php scripts/qualify-dependencies.php --check`. Keep it aligned with the lock and installed runtime files before `composer build`. |
+| Tests and proof | Update focused composition, dependency-copy, archive-uninstall, and Transporter tests for the new identity. Qualify both plugin load orders and the built archive; then prove consent, no fallback, switching, return, and disposable uninstall separately. |
 
 Private workflow state separation prevents accidental collisions; it does not
 sandbox trusted active PHP plugins or authenticate a third-party publisher.
