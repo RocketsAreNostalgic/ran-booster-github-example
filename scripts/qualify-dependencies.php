@@ -49,6 +49,9 @@ function qualify_dependencies( bool $check ): void {
 		if ( 'ran/wp-release-updater' === $name ) {
 			$paths = array_merge( $paths, array( 'bootstrap.php', 'runtime.php', 'runtime-copy.json' ) );
 		}
+		if ( 'ran/booster-github-provider' === $name ) {
+			$paths[] = 'languages/ran-booster-github-provider.pot';
+		}
 		if ( count( $paths ) > 300 ) {
 			throw new \RuntimeException( 'Runtime qualification exceeds its bound.' );
 		}
