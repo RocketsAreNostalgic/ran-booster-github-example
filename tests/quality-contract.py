@@ -62,6 +62,7 @@ with tempfile.TemporaryDirectory(prefix='ran-example-quality-') as directory:
         ('scripts/fixture-data.py', 'from pathlib import Path\nPath("fixture.php").write_text(\'<?php function ( {\')\n'),
         ('scripts/quoted-data.sh', '#!/bin/sh\nprintf \'%s\\n\' \'<?php function ( {\'\n'),
         ('scripts/ordinary-process.py', 'import subprocess\nsubprocess.run(["git", "branch", "-r"], check=True)\n'),
+        ('scripts/argv-data.py', 'import subprocess\nsubprocess.run(["rg", "php -r", "README.md"])\nsubprocess.run(["rg", "php", "-r"])\n'),
     ]:
         target = root / path
         target.write_text(source)

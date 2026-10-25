@@ -78,12 +78,27 @@ def python_source(source):
             continue
         strings = [entry.value for argument in node.args for entry in ast.walk(argument)
                    if isinstance(entry, ast.Constant) and isinstance(entry.value, str)]
-        for value in strings:
-            if re.search(r'\s|[|<>;&]', value) and re.search(r'\bphp(?:\d+(?:\.\d+)*)?\b', value, re.IGNORECASE):
-                shell_source(value)
-        possible_php = any(php_executable(value) for value in strings)
+        command = node.args[0] if node.args else None
+        elements = command.elts if isinstance(command, (ast.List, ast.Tuple)) else []
+        executable = elements[0] if elements else command
+        executable_nodes = list(ast.walk(executable)) if executable is not None else []
+        possible_php = any(isinstance(entry, ast.Constant) and isinstance(entry.value, str)
+                           and php_executable(entry.value) for entry in executable_nodes)
         possible_php = possible_php or any(isinstance(entry, ast.Name) and 'php' in entry.id.lower()
-                                           for argument in node.args for entry in ast.walk(argument))
+                                           for entry in executable_nodes)
+        # argv data is not shell source. Only actual shell command arguments are
+        # tokenized; grep patterns and fixture strings retain their own meaning.
+        shell_call = name.rsplit('.', 1)[-1] in {'system', 'popen', 'getoutput', 'getstatusoutput'}
+        shell_call = shell_call or any(keyword.arg == 'shell' and not (isinstance(keyword.value, ast.Constant) and keyword.value.value is False)
+                                       for keyword in node.keywords)
+        if shell_call and isinstance(command, ast.Constant) and isinstance(command.value, str):
+            shell_source(command.value)
+        if (len(elements) >= 3 and isinstance(elements[0], ast.Constant)
+                and isinstance(elements[0].value, str)
+                and elements[0].value.rsplit('/', 1)[-1] in {'sh', 'bash', 'dash', 'zsh', 'ksh'}
+                and isinstance(elements[1], ast.Constant) and elements[1].value == '-c'
+                and isinstance(elements[2], ast.Constant) and isinstance(elements[2].value, str)):
+            shell_source(elements[2].value)
         # A literal code flag is unsupported even when the executable comes from
         # PHP_BINARY. Unrelated tools retain their own flag semantics; this does
         # not evaluate arbitrary command wrappers or infer computed arguments.
@@ -91,8 +106,7 @@ def python_source(source):
             raise ValueError('inline PHP process code flags require a maintained, directly checked PHP file')
         if possible_php and any(keyword.arg in {'input', 'stdin'} for keyword in node.keywords):
             raise ValueError('passing source to PHP stdin requires a maintained PHP entrypoint')
-        if possible_php and node.args and isinstance(node.args[0], (ast.List, ast.Tuple)):
-            elements = node.args[0].elts
+        if possible_php and elements:
             if len(elements) == 1 or any(isinstance(element, ast.Constant) and element.value == '-'
                                          for element in elements[1:]):
                 raise ValueError('PHP stdin execution requires a maintained PHP entrypoint')
