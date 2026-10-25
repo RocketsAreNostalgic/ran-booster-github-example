@@ -1,7 +1,7 @@
 # Releases
 
 Release Please owns versions, changelog entries, release PRs, tags and draft
-GitHub Releases. The pinned organisation
+GitHub Releases. The pinned organization
 [Profile B](https://github.com/RocketsAreNostalgic/.github/blob/3f494749341f23b8c3ed1048380a5f20526f4814/docs/release/RELEASE_PROFILE_B.md)
 publishes the exact ZIP and checksum already tested by successful main Quality.
 Follow the shared
@@ -104,9 +104,16 @@ not authorize merging that release PR. For every source and release PR:
 5. After authorized release delivery, observe main Quality and Profile B, then
    read back the actual tag target, non-draft immutable release and both asset
    digests. Workflow success or a merged release PR alone is not publication.
+6. After the first genuine release is published and read back, enable periodic
+   release-liveness observation in a reviewed follow-up. Do not invent a tag,
+   release proposal or lifecycle labels to satisfy the observer during bootstrap.
 
 `Release liveness` is a read-only observer of the root release lifecycle. It does
-not certify asset bytes, installed behavior or manual acceptance.
+not certify asset bytes, installed behavior or manual acceptance. It is
+manual-only during the unpublished bootstrap: the shared observer expects a real
+merged release proposal, which the baseline `0.1.0` intentionally does not claim.
+Automatic release proposals and tested-asset publication retain their ordinary
+Quality-driven process.
 
 GitHub publication is separate from WordPress.org publishing and deployment.
 This repository has no SVN publisher and no retained-site deployment step.

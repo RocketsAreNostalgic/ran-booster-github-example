@@ -38,6 +38,37 @@ with tempfile.TemporaryDirectory(prefix='ran-example-quality-') as directory:
             shutil.copyfile(source, root / source.name)
     (root / 'vendor').symlink_to(ROOT / 'vendor', target_is_directory=True)
     coverage(root)
+    embedded = [
+        ('scripts/hidden-php.py', 'import subprocess\nsubprocess.run(["php", "-r", "function ( {"], check=True)\n'),
+        ('new-root/helper.py', 'import subprocess as sp\nsp.run([PHP_BINARY, "--run=function ( {"], check=True)\n'),
+        ('tests/imported.py', 'from subprocess import run as execute\nexecute(["php", "-r", "function ( {"])\n'),
+        ('scripts/stdin.py', 'import subprocess\nsubprocess.run(["php"], input="<?php function ( {", text=True)\n'),
+        ('scripts/pipe.py', 'from subprocess import Popen\nPopen(["php"], stdin=PIPE)\n'),
+        ('scripts/hidden-php.sh', '#!/bin/sh\nphp -r \'function ( {\'\n'),
+        ('scripts/heredoc.sh', '#!/bin/sh\nphp <<\'PHP\'\n<?php function ( {\nPHP\n'),
+        ('scripts/stdin.sh', '#!/bin/sh\nprintf \'%s\' \'<?php function ( {\' | php\n'),
+        ('scripts/redirect.sh', '#!/bin/sh\nphp < hidden-source\n'),
+        ('scripts/helper-command', '#!/usr/bin/env Python3\nimport subprocess\nsubprocess.run(["php", "-r", "function ( {"])\n'),
+        ('scripts/executable.JSON', '<?PHP function ( {'),
+    ]
+    for path, source in embedded:
+        target = root / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(source)
+        coverage(root, success=False)
+        run(root, 'scripts/lint.php', success=False)
+        target.unlink()
+    for path, source in [
+        ('scripts/fixture-data.py', 'from pathlib import Path\nPath("fixture.php").write_text(\'<?php function ( {\')\n'),
+        ('scripts/quoted-data.sh', '#!/bin/sh\nprintf \'%s\\n\' \'<?php function ( {\'\n'),
+        ('scripts/ordinary-process.py', 'import subprocess\nsubprocess.run(["git", "branch", "-r"], check=True)\n'),
+    ]:
+        target = root / path
+        target.write_text(source)
+        coverage(root)
+        run(root, 'scripts/lint.php')
+        target.unlink()
+    print('PASS: Python process aliases, inline PHP flags, stdin and shell heredoc/pipe forms fail both guards; quoted fixture data remains data.')
     paths = ['future.php', 'new-root/nested/Probe.php', 'scripts/new/probe.php',
              'tests/new/Probe.php', 'src/tests/vendor/probe.php', 'src/dist/probe.php',
              'tests/vendor/probe.php']

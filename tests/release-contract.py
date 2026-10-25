@@ -180,6 +180,21 @@ class ReleaseContracts(unittest.TestCase):
                 if 'uses:' in line:
                     self.assertRegex(line, r'@[0-9a-f]{40}(?:\s|$)')
 
+    def test_fixture_validation_preserves_each_repository_contract(self):
+        quality = (ROOT / '.github/workflows/quality.yml').read_text()
+        commands = [line.strip() for line in quality.splitlines() if 'composer ' in line and ' validate ' in line]
+        self.assertEqual(commands, [
+            'composer validate --strict --no-check-publish',
+            'composer --working-dir="$RAN_BOOSTER_CORE_PATH" validate --strict --no-check-publish --no-check-all',
+        ])
+
+    def test_unpublished_bootstrap_does_not_automatically_invoke_liveness(self):
+        observer = (ROOT / '.github/workflows/release-liveness.yml').read_text()
+        trigger = observer.split('\npermissions:', 1)[0]
+        self.assertIn('workflow_dispatch:', trigger)
+        self.assertNotRegex(trigger, r'(?m)^\s+(schedule|workflow_run|push|pull_request):')
+        self.assertNotIn('cron:', trigger)
+
 
 if __name__ == '__main__':
     unittest.main()

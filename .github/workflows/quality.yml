@@ -97,7 +97,8 @@ jobs:
           set -euo pipefail
           composer validate --strict --no-check-publish
           composer install --no-interaction --prefer-dist --no-progress
-          composer --working-dir="$RAN_BOOSTER_CORE_PATH" validate --strict --no-check-publish
+          # Core's own contract permits its intentional exact beta dependency pins.
+          composer --working-dir="$RAN_BOOSTER_CORE_PATH" validate --strict --no-check-publish --no-check-all
           composer --working-dir="$RAN_BOOSTER_CORE_PATH" install --no-dev --no-interaction --prefer-dist --no-progress
 
       - name: Run canonical quality contract

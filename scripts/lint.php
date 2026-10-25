@@ -6,7 +6,12 @@ namespace RAN\BoosterGitHubExample\Scripts;
 
 /** Recursively lint every maintained PHP file, including root entry points. */
 function lint(): int {
-	$root     = dirname( __DIR__ );
+	$root = dirname( __DIR__ );
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_passthru -- Run the fixed AST/shell lexical guard on local maintained helpers, without evaluating their source.
+	passthru( 'python3 ' . escapeshellarg( __DIR__ . '/check-embedded-php.py' ) . ' ' . escapeshellarg( $root ), $status );
+	if ( 0 !== $status ) {
+		return $status;
+	}
 	$iterator = new \RecursiveIteratorIterator(
 		new \RecursiveCallbackFilterIterator(
 			new \RecursiveDirectoryIterator( $root, \FilesystemIterator::SKIP_DOTS ),
