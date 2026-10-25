@@ -32,6 +32,6 @@ for order in \
 	'["ran-booster/ran-booster.php","ran-booster-github-example/ran-booster-github-example.php"]' \
 	'["ran-booster-github-example/ran-booster-github-example.php","ran-booster/ran-booster.php"]'; do
 	wp --path="$site_root" option update active_plugins "$order" --format=json
-	RAN_EXAMPLE_EXPECTED_ORDER="$order" wp --path="$site_root" eval-file "$repo_root/tests/release-installed.php"
+	RAN_EXAMPLE_EXPECTED_ORDER="$order" wp --path="$site_root" eval-file "$repo_root/tests/release-installed.php" --use-include
 done
 printf 'Clean WordPress activation and both dependency load orders passed.\n'

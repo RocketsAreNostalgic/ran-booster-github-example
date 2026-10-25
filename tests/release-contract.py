@@ -195,6 +195,13 @@ class ReleaseContracts(unittest.TestCase):
         self.assertNotRegex(trigger, r'(?m)^\s+(schedule|workflow_run|push|pull_request):')
         self.assertNotIn('cron:', trigger)
 
+    def test_installed_probe_includes_its_strict_namespaced_file(self):
+        smoke = (ROOT / 'scripts/release-install-smoke.sh').read_text()
+        commands = [line.strip() for line in smoke.splitlines() if ' eval-file ' in line]
+        self.assertEqual(commands, [
+            'RAN_EXAMPLE_EXPECTED_ORDER="$order" wp --path="$site_root" eval-file "$repo_root/tests/release-installed.php" --use-include',
+        ])
+
 
 if __name__ == '__main__':
     unittest.main()
