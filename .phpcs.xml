@@ -2,12 +2,12 @@
 <ruleset name="RAN Booster GitHub Example">
 	<description>WordPress plugin and PHP 8.2 compatibility for maintained example code.</description>
 	<config name="minimum_wp_version" value="7.0"/>
-	<config name="testVersion" value="8.2-"/>
+	<config name="testVersion" value="8.2-8.5"/>
 	<file>.</file>
-	<exclude-pattern>/vendor/</exclude-pattern>
-	<exclude-pattern>/dist/</exclude-pattern>
-	<exclude-pattern>/.phpstan/</exclude-pattern>
-	<exclude-pattern>/.phpunit.cache/</exclude-pattern>
+	<exclude-pattern type="relative">^vendor/*</exclude-pattern>
+	<exclude-pattern type="relative">^dist/*</exclude-pattern>
+	<exclude-pattern type="relative">^\.phpstan/*</exclude-pattern>
+	<exclude-pattern type="relative">^\.phpunit\.cache/*</exclude-pattern>
 	<arg name="basepath" value="."/>
 	<arg name="extensions" value="php"/>
 	<arg value="sp"/>

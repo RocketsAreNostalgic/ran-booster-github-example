@@ -12,9 +12,10 @@ Start with [Choose GitHub support](https://github.com/RocketsAreNostalgic/ran-bo
 if you operate a site, or read the [developer contract](https://github.com/RocketsAreNostalgic/ran-booster/blob/b026542da75d88a36eb78ca6b9517ca7bb69433e/docs/provider-extension-contract.md#github-replacement-presentation)
 before adapting this plugin.
 
-There is no packaged Example release or WordPress.org listing. Use a compatible
-Booster installation and build this repository yourself for a separate WordPress
-test site you can discard.
+This example is intended for a separate WordPress test site you can discard.
+There is no WordPress.org listing. Until the first qualified GitHub release is
+published, build the repository yourself. See [Releases](RELEASE.md) for the
+dependency-update and tested-ZIP release process.
 
 ## What this plugin replaces
 
@@ -42,11 +43,19 @@ second records its outcome. The plugin does not use a private Booster container.
 
 ## Build and check a local ZIP
 
-Use PHP 8.2 or newer, WordPress 7.0 or newer, and a compatible Booster build
+Use PHP 8.2–8.5, WordPress 7.0 or newer, and a compatible Booster build
 with Provider beta.20, Provider API 15, and the native-update checkpoints. Booster
 and Example must contain matching Provider files. PHP may load Booster's copy
 first; Example allows that reuse only when those files match the dependency file
 hashes it records.
+
+Development checks also require Composer 2, Python 3.10 or newer and WP-CLI
+2.12.0. The quality profile is `wordpress-plugin`; this PHP-only plugin has no
+frontend build. `host-contract.json` identifies the exact Core source revision
+used for qualification. Check out that revision in a separate directory and
+install its locked production dependencies with `composer install --no-dev`.
+The recorded host is a test fixture, rather than an additional runtime version
+restriction on compatible Booster installations.
 
 ```sh
 git clone https://github.com/RocketsAreNostalgic/ran-booster-github-example.git
@@ -55,12 +64,23 @@ composer install --no-interaction --prefer-dist --no-progress
 RAN_BOOSTER_CORE_PATH=/absolute/path/to/compatible-core composer check
 composer build
 python3 scripts/test-archive.py
+python3 scripts/release.py archive
 ```
 
 `composer check` needs a supported Booster source checkout with its dependencies.
 Booster is not a production Composer dependency of this plugin. The checks use
 synthetic credentials and HTTP responses, and the archive probe uses temporary
 directories rather than a live site or remote repository.
+
+The aggregate runs the shared PHP coding standard, PHPStan level 8, maintained-file
+coverage and negative controls, tests, gettext parity and dependency qualification.
+The host check verifies Core's revision, tracked source bytes, production lock and
+matching runtime dependencies. `composer i18n:pot` regenerates the tracked runtime
+translation catalogue; `composer i18n:check` checks it without changing source.
+
+Use `fix(deps):` for production dependency updates so Release Please proposes an
+Example release too. Development-only dependency updates may use `chore(deps):`.
+Every update still needs qualification and review; see [RELEASE.md](RELEASE.md).
 
 The built ZIP is written under `dist/`. Do not use a source checkout without
 its Composer dependencies and `qualified-provider.json`, the file that records
@@ -137,3 +157,8 @@ These names appear in more than one file. Change them as a set.
 
 Private workflow separation prevents accidental collisions. It does not
 sandbox a trusted active PHP plugin or authenticate a third-party publisher.
+
+For public reports and contributions, follow the organization
+[support guidance](https://github.com/RocketsAreNostalgic/.github/blob/main/SUPPORT.md),
+[security policy](https://github.com/RocketsAreNostalgic/.github/blob/main/SECURITY.md)
+and [contribution guidance](https://github.com/RocketsAreNostalgic/.github/blob/main/CONTRIBUTING.md).

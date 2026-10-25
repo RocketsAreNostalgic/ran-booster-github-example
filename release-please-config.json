@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "68e3b6504fd7358bebdd32619a984f8e5e780b2d",
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "package-name": "ran-booster-github-example",
+      "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": false,
+      "include-v-in-tag": true,
+      "bump-minor-pre-major": true,
+      "changelog-sections": [
+        { "type": "feat", "section": "Features", "hidden": false },
+        { "type": "fix", "section": "Bug Fixes", "hidden": false },
+        { "type": "perf", "section": "Performance", "hidden": false },
+        { "type": "revert", "section": "Reverts", "hidden": false }
+      ],
+      "extra-files": [
+        { "type": "generic", "path": "ran-booster-github-example.php" }
+      ]
+    }
+  },
+  "draft": true,
+  "force-tag-creation": true
+}
