@@ -17,17 +17,24 @@ SLUG = 'ran-booster-github-example'
 RUNTIME = {'ran/booster-github-provider', 'ran/updater-support', 'ran/wp-release-updater'}
 
 
-def build() -> Path:
-    lock = json.loads((ROOT / 'composer.lock').read_text())
+def build(root: Path = ROOT, candidate_provider_sha: str | None = None) -> Path:
+    if (root / 'candidate-proof.json').exists() and candidate_provider_sha is None:
+        raise RuntimeError('Candidate assemblies cannot produce release artifacts')
+    if candidate_provider_sha is not None and re.fullmatch(r'[a-f0-9]{40}', candidate_provider_sha) is None:
+        raise RuntimeError('Candidate Provider requires an exact Git SHA')
+    lock = json.loads((root / 'composer.lock').read_text())
     if {p['name'] for p in lock['packages']} != RUNTIME:
         raise RuntimeError('Unexpected production package graph')
     php = os.environ.get('PHP_BINARY', 'php')
     composer = os.environ.get('COMPOSER_BINARY', 'composer')
-    subprocess.run([php, str(ROOT / 'scripts/qualify-dependencies.php'), '--check'], check=True)
-    for source in [ROOT / 'src', ROOT / 'vendor']:
+    qualification = [php, str(ROOT / 'scripts/qualify-dependencies.php'), '--check']
+    if candidate_provider_sha is not None:
+        qualification += ['--candidate-provider=' + candidate_provider_sha, '--candidate-root=' + str(root)]
+    subprocess.run(qualification, check=True)
+    for source in [root / 'src', root / 'vendor']:
         if any(path.is_symlink() for path in source.rglob('*')):
             raise RuntimeError('Symlinked source or dependency trees are not distributable')
-    header = (ROOT / (SLUG + '.php')).read_text()
+    header = (root / (SLUG + '.php')).read_text()
     version = re.search(r'^ \* Version: ([0-9]+\.[0-9]+\.[0-9]+)$', header, re.MULTILINE)
     if version is None:
         raise RuntimeError('A single WordPress plugin version is required')
@@ -35,13 +42,15 @@ def build() -> Path:
         stage = Path(directory) / SLUG
         stage.mkdir()
         for name in ['composer.json', 'composer.lock', 'ran-booster-github-example.php', 'uninstall.php', 'ran-booster-github-example.gh-replacement.json', 'qualified-provider.json', 'README.md', 'LICENSE']:
-            source = ROOT / name
+            source = root / name
             if not source.is_file() or source.is_symlink():
                 raise RuntimeError(f'Unowned build source: {name}')
             shutil.copyfile(source, stage / name)
-        shutil.copytree(ROOT / 'src', stage / 'src')
-        shutil.copytree(ROOT / 'languages', stage / 'languages')
-        shutil.copytree(ROOT / 'vendor', stage / 'vendor')
+        shutil.copytree(root / 'src', stage / 'src')
+        shutil.copytree(root / 'languages', stage / 'languages')
+        shutil.copytree(root / 'vendor', stage / 'vendor')
+        if candidate_provider_sha is not None:
+            shutil.copyfile(root / 'candidate-proof.json', stage / 'candidate-proof.json')
         env = os.environ.copy()
         env['COMPOSER_HOME'] = str(Path(directory) / 'composer-home')
         env['COMPOSER_DISABLE_NETWORK'] = '1'
@@ -64,7 +73,8 @@ def build() -> Path:
         bin_dir = stage / 'vendor/bin'
         if bin_dir.exists():
             shutil.rmtree(bin_dir)
-        output = ROOT / 'dist' / (SLUG + '.zip')
+        suffix = '' if candidate_provider_sha is None else '-candidate-' + candidate_provider_sha
+        output = root / 'dist' / (SLUG + suffix + '.zip')
         output.parent.mkdir(exist_ok=True)
         with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
             for path in sorted(stage.rglob('*')):
