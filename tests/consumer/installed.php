@@ -84,7 +84,10 @@ final class Installed {
 				self::check( 'install' === $phase, 'Both installed package copies required.' );
 				continue;
 			}
-			self::check( hash_file( 'sha256', $copy . '/composer.json' ) === $receipt['provider']['manifest_sha256'], 'Installed provider manifest differs from the candidate.' );
+			// Core's reviewed runtime allowlist ships package source without Composer metadata.
+			if ( str_starts_with( $copy, WP_PLUGIN_DIR . '/ran-booster-github-example/' ) ) {
+				self::check( hash_file( 'sha256', $copy . '/composer.json' ) === $receipt['provider']['manifest_sha256'], 'Installed provider manifest differs from the candidate.' );
+			}
 			$iterator = new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( $receipt['provider']['source_root'] . '/src', \FilesystemIterator::SKIP_DOTS ) );
 			foreach ( $iterator as $file ) {
 				self::check( ! $file->isLink(), 'Candidate source symlinks are forbidden.' );
