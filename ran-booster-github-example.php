@@ -3,7 +3,7 @@
  * Plugin Name: RAN Booster — GitHub Example
  * Description: Optional developer example; GitHub support is already bundled with Booster.
  * x-release-please-start-version
- * Version: 0.2.0
+ * Version: 0.2.1
  * x-release-please-end
  * Requires at least: 7.0
  * Requires PHP: 8.2
