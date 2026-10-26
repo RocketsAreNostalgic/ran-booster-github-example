@@ -1,10 +1,10 @@
 {
   "repository": "RocketsAreNostalgic/ran-booster",
-  "tag": "v1.0.0-beta.38",
-  "commit": "2aa1e606b2bb1491675cfbb7546a7ce81bb86cfa",
-  "tree": "d30152948c3724da7116063dada785710574f79c",
-  "composer_lock_sha256": "57a5f9c74b6f7752b7dcc565882d31461e73a4c2465ded521be3fb2144e4a9db",
+  "tag": "v1.0.0-beta.39",
+  "commit": "2adede228e1d0be3559ca74e8e2665bbf65d8e1f",
+  "tree": "ab789be0d805ec4a84449557092fadfa37cbea96",
+  "composer_lock_sha256": "6b16434d5bc9aab07a015d243ca0d63120ebfe7566d89626c0ce6de88fcdf045",
   "provider_api": 15,
-  "asset": "ran-booster-1.0.0-beta.38.zip",
-  "asset_sha256": "83d6320124da2dfc837f06445e0921eb2d528fba8062915fe4a9b7b978438ffc"
+  "asset": "ran-booster-1.0.0-beta.39.zip",
+  "asset_sha256": "13fd72cc785bed3d888d258b9ad3e1ef771acfece35fb424d69ee04d9a4c56ef"
 }
