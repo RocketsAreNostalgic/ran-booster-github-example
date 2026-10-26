@@ -164,13 +164,19 @@ final class Installed {
 		$downloads = 0;
 		$requests  = 0;
 		$streams   = array();
-		$transport = static function ( mixed $pre, array $arguments, string $url ) use ( $archive, $tag, &$downloads, &$requests, &$streams ): array {
+		$transport = static function ( mixed $pre, array $arguments, string $url ) use ( $archive, $tag, &$downloads, &$requests, &$streams ): array|\WP_Error {
 			unset( $pre );
 			++$requests;
 			foreach ( array_keys( $arguments['headers'] ?? array() ) as $key ) {
 				self::check( ! in_array( strtolower( (string) $key ), array( 'authorization', 'proxy-authorization', 'cookie' ), true ), 'Anonymous proof sent credentials.' );
 			}
 			$base    = 'https://api.github.com/repos/' . self::REPOSITORY;
+			$allowed = array( $base, 'https://api.github.com/repositories/123456789', $base . '/releases?per_page=20&page=1', $base . '/releases/424007053', $base . '/releases/tags/' . $tag, $base . '/commits/' . $tag, $base . '/releases/assets/42' );
+			if ( ! in_array( $url, $allowed, true ) ) {
+				// Deny native optional HTTP without turning a refused request into an installer exception.
+				return new \WP_Error( 'consumer_http_denied', 'Unapproved HTTP is unavailable in this disposable proof.' );
+			}
+
 			$release = array(
 				'id'           => 424007053,
 				'tag_name'     => $tag,
@@ -204,7 +210,7 @@ final class Installed {
 						'default_branch' => 'main',
 						'owner'          => array( 'login' => 'RocketsAreNostalgic' ),
 					),
-					$base . '/releases' => array( $release ),
+					$base . '/releases?per_page=20&page=1' => array( $release ),
 					$base . '/releases/424007053', $base . '/releases/tags/' . $tag => $release,
 					$base . '/commits/' . $tag => array( 'sha' => str_repeat( 'a', 40 ) ),
 					default => throw new RuntimeException( 'Every uncontrolled HTTP request is refused: ' . $url ),
@@ -230,7 +236,7 @@ final class Installed {
 				'branch'        => 'main',
 			);
 			$list    = $facade->list_candidates( 'plugin', $request, 'stable', wp_create_nonce( $facade->nonce_action( 'list_candidates', 'plugin', null ) ) );
-			self::check( $list->successful() && '424007053' === ( $list->data()['candidates'][0]['release_id'] ?? null ) && 0 === $downloads, 'Real release listing failed or downloaded bytes.' );
+			self::check( $list->successful() && '424007053' === ( $list->data()['candidates'][0]['release_id'] ?? null ) && 0 === $downloads, 'Real release listing failed: ' . $list->code() . '; candidates=' . count( $list->data()['candidates'] ?? array() ) . '; requests=' . $requests . '; downloads=' . $downloads );
 			if ( ! $install ) {
 				return;
 			}
@@ -238,7 +244,7 @@ final class Installed {
 			self::check( $inspection->successful() && 1 === $downloads, 'Real release inspection failed: ' . $inspection->code() );
 			$data   = $inspection->data();
 			$result = $facade->install( 'plugin', $request, '424007053', $tag, $data['fingerprint'], 'stable', wp_create_nonce( $facade->nonce_action( 'install', 'plugin', $data['provider_expectation'] ) ), $data['provider_expectation'] );
-			self::check( $result->successful() && 'installed' === $result->code() && 2 === $downloads && $requests > 2, 'Real updater install failed: ' . $result->code() );
+			self::check( $result->successful() && 'installed' === $result->code() && 2 === $downloads && $requests > 2, 'Real updater install failed: ' . $result->code() . '; result=' . wp_json_encode( $result->data() ) . '; requests=' . $requests . '; downloads=' . $downloads );
 			self::check( ! is_plugin_active( self::BASENAME ), 'Prospective installation unexpectedly activated Example.' );
 			self::verify_archive( $archive );
 			foreach ( $streams as $stream ) {
