@@ -63,7 +63,8 @@
       "@test:unit",
       "@test:host-contract",
       "@test:quality-contract",
-      "@test:release-contract"
+      "@test:release-contract",
+      "@test:consumer-preparation"
     ],
     "qualify:dependencies": "@php scripts/qualify-dependencies.php --check",
     "build": "python3 scripts/build.py",
@@ -84,6 +85,7 @@
     "i18n:check": "python3 scripts/make-pot.py --check",
     "release:check": "python3 scripts/release.py check",
     "test:release-contract": "python3 tests/release-contract.py",
+    "test:consumer-preparation": "python3 tests/consumer-preparation.py",
     "check:coverage": "@php scripts/check-coverage.php",
     "test:quality-contract": "python3 tests/quality-contract.py",
     "test:unit": "phpunit --configuration phpunit.xml --fail-on-phpunit-deprecation"

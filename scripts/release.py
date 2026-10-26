@@ -47,6 +47,10 @@ def version(root: Path = ROOT) -> str:
 
 
 def check_config(root: Path = ROOT) -> str:
+    if (root / 'candidate-proof.json').exists():
+        raise ValueError('Candidate assemblies cannot qualify for release or promotion')
+    if any(package['version'].startswith('dev-') or package['version'].endswith('-dev') for package in document(root / 'composer.lock')['packages']):
+        raise ValueError('Unreleased candidate dependency graphs cannot qualify for release or promotion')
     value = version(root)
     config = document(root / 'release-please-config.json')
     package = config['packages']['.']

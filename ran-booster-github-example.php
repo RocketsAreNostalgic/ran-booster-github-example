@@ -8,6 +8,7 @@
  * Requires at least: 7.0
  * Requires PHP: 8.2
  * Requires Plugins: ran-booster
+ * Update URI: https://github.com/RocketsAreNostalgic/ran-booster-github-example
  * Author: Rockets Are Nostalgic
  * License: GPL-2.0-or-later
  * Text Domain: ran-booster-github-example

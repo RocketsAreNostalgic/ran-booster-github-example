@@ -121,6 +121,35 @@ Booster-held credentials through an available, compatible provider. It does not
 install this Example at a destination or move private workflow records, previews,
 locks, external credentials, or remote webhook configuration.
 
+## Test an unreleased Provider candidate
+
+The Provider package uses this plugin as its real Composer consumer in CI. Pin
+this repository's source, then supply the exact package commit under test; the
+package does not need a release or a committed dependency bump here first.
+
+```sh
+python3 scripts/prepare-provider-candidate.py \
+  --provider-root /path/to/provider --provider-sha FULL_PROVIDER_SHA \
+  --host-root /path/to/core --host-sha FULL_CORE_SHA \
+  --output /new/disposable/assembly
+RAN_PROVIDER_CONSUMER_ASSEMBLY=/new/disposable/assembly \
+  RUNNER_TEMP=/private/runner/temp bash scripts/consumer-installed-smoke.sh
+```
+
+Inputs must be clean Git checkouts. Use the Core revision in `host-contract.json`.
+The preparer uses Composer to install the candidate into temporary plugin and
+host copies while retaining unrelated locked packages. Matching host copies
+preserve the check against incompatible already-loaded dependencies. Neither
+input checkout is changed. Candidate archives and their exact commit/digest
+receipt are test evidence; the normal release build rejects candidate assemblies.
+
+The installed test needs PHP, Composer, WP-CLI and a disposable database. It uses
+the existing installation runner, discovers and installs the actual Example ZIP
+through the updater with controlled GitHub responses, then checks activation,
+explicit adoption and both plugin load orders. Its database defaults match CI;
+local isolated databases can set `RAN_EXAMPLE_DB_NAME`, `RAN_EXAMPLE_DB_USER`,
+`RAN_EXAMPLE_DB_PASSWORD` and `RAN_EXAMPLE_DB_HOST`.
+
 ## Adapt this example
 
 These names appear in more than one file. Change them as a set.
