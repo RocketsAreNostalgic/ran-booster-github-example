@@ -46,6 +46,22 @@ final class DependencyCopiesTest extends TestCase {
 		self::assertSame( $source, ( new \ReflectionClass( $provider ) )->getFileName() );
 	}
 
+	public function test_core_native_updater_copy_coexists_with_the_qualified_example(): void {
+		$core = getenv( 'RAN_BOOSTER_CORE_PATH' );
+		self::assertIsString( $core );
+		$relative = '/vendor/ran/wp-release-updater/src/WordPress/NativePackageUpdater.php';
+		$source   = realpath( $core . $relative );
+		self::assertIsString( $source );
+		self::assertSame( hash_file( 'sha256', dirname( __DIR__ ) . $relative ), hash_file( 'sha256', $source ) );
+		require $source;
+		Plugin::load_dependencies();
+		$symbol = 'RAN\\WPReleaseUpdater\\V1\\WordPress\\NativePackageUpdater';
+		if ( ! class_exists( $symbol, false ) ) {
+			throw new \RuntimeException( 'The Core native updater copy was not loaded.' );
+		}
+		self::assertInstanceOf( GitHubProvider::class, $this->aggregate() );
+	}
+
 	private function aggregate(): GitHubProvider {
 		$credentials = $this->createMock( ProviderCredentialStore::class );
 		$credentials->expects( self::never() )->method( 'credential_material' );

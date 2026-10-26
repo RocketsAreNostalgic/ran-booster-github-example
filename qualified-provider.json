@@ -34,11 +34,11 @@
             }
         },
         "ran/wp-release-updater": {
-            "reference": "4e89b6c61ae57ebf02a74cea697ab0ee06d95f66",
+            "reference": "5d6570c9275fa5062940e202aec00a597eb13824",
             "files": {
                 "bootstrap.php": "ec505c96d31c8ec834113839c994d15042c40e3011c3666641b18e5ff9ff90ec",
                 "composer.json": "f197fa964b8b7979d03c363f8231c7be2efc33652f7b7f3d98b449e2ed3bee72",
-                "runtime-copy.json": "cc7e461bd5a9ffa03877cf72af91ad0d6fbe7a932b36d71394a19b59e21d5b77",
+                "runtime-copy.json": "f9527a76eaeafacb88514a4b427a1215a7a9624b8017d14b3d78c8a0d67301ca",
                 "runtime.php": "9311ac4ff23c6125c7c252f51029c2df674d24a46602f531ecf28a77933c9003",
                 "src/Archive/ArchiveScanResult.php": "470cd60014392a820b1c672f3570c02d5ee2f4d7a18e5638fee2bee6e11aff29",
                 "src/Archive/ArchiveScanner.php": "69d477a9175fcd1f5839b177dd2137a974760dce33d5359034166e72a2a489fb",
@@ -69,7 +69,7 @@
                 "src/WordPress/BindingFenceCoordinator.php": "b2ff5a9e438d8ea7820873cee24f55acc18a2dd87ae45b6527d667a89d6777fd",
                 "src/WordPress/BindingState.php": "b83e2a241eb2e0bbe7954ccb30b46d0c1a384d0fe0186868bcea82dc68a11bc0",
                 "src/WordPress/InstalledPackageResolver.php": "ac2a4eb483ae0f8cab321e8d10231397028d01a3d39cbdcb3ed9a7d44d1454a9",
-                "src/WordPress/NativePackageUpdater.php": "bb22aacdb84f01ecb02705d5e27dd8fd087e47d6b8804def44d43d71559e6d48",
+                "src/WordPress/NativePackageUpdater.php": "dfccea2c2acc34bf3ab93b7325649999602f311c87e1945bbf7c2d342539f641",
                 "src/WordPress/OwnedArchiveStore.php": "46b10d728b2412597ef308209b83b542dbde89176e611e476cc061a9c236c2cf",
                 "src/WordPress/PendingInstallState.php": "d792c27e1664dcd6d5e89c24bd6858089a1639ee7b367e460f15799e704a1592",
                 "src/WordPress/StagedPackageManifest.php": "e6ffd0e33f0f468b612a1dcb162bb0e116bf884ff9e4709471b924cbc3bb3b02"
