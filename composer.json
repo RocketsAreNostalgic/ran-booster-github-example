@@ -22,7 +22,7 @@
     }
   ],
   "require": {
-    "php": "^8.2",
+    "php": ">=8.2 <8.6",
     "ran/booster-github-provider": "~1.0.0-beta.20",
     "ran/updater-support": "~1.0.0-beta.4",
     "ran/wp-release-updater": "~1.0.0-beta.12"
@@ -54,18 +54,39 @@
     "lint:syntax": "@php scripts/lint.php",
     "standards": "phpcs --standard=.phpcs.xml --report=summary",
     "standards:fix": "phpcbf --standard=.phpcs.xml --report=summary",
-    "analyze": "phpstan analyse --configuration=phpstan.neon --no-progress --memory-limit=512M --debug",
-    "test": "phpunit --configuration phpunit.xml --fail-on-phpunit-deprecation",
+    "analyze": [
+      "@check:host",
+      "phpstan analyse --configuration=phpstan.neon --no-progress --memory-limit=512M --debug"
+    ],
+    "test": [
+      "@check:host",
+      "@test:unit",
+      "@test:host-contract",
+      "@test:quality-contract",
+      "@test:release-contract"
+    ],
     "qualify:dependencies": "@php scripts/qualify-dependencies.php --check",
     "build": "python3 scripts/build.py",
     "check": [
       "@validate:strict",
+      "@release:check",
+      "@i18n:check",
+      "@check:coverage",
       "@lint:syntax",
       "@standards",
       "@analyze",
       "@test",
       "@qualify:dependencies"
-    ]
+    ],
+    "check:host": "python3 scripts/check-host.py",
+    "test:host-contract": "python3 tests/host-contract.py",
+    "i18n:pot": "python3 scripts/make-pot.py",
+    "i18n:check": "python3 scripts/make-pot.py --check",
+    "release:check": "python3 scripts/release.py check",
+    "test:release-contract": "python3 tests/release-contract.py",
+    "check:coverage": "@php scripts/check-coverage.php",
+    "test:quality-contract": "python3 tests/quality-contract.py",
+    "test:unit": "phpunit --configuration phpunit.xml --fail-on-phpunit-deprecation"
   },
   "config": {
     "platform": {
@@ -74,7 +95,8 @@
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     },
-    "sort-packages": true
+    "sort-packages": true,
+    "github-protocols": ["https"]
   },
   "support": {
     "source": "https://github.com/RocketsAreNostalgic/ran-booster-github-example",

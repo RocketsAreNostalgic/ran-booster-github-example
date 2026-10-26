@@ -2,7 +2,13 @@ includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
 	level: 8
+	phpVersion: 80200
 	treatPhpDocTypesAsCertain: false
+	scanFiles:
+		- vendor/squizlabs/php_codesniffer/src/Config.php
+		- vendor/squizlabs/php_codesniffer/src/Runner.php
+		- vendor/squizlabs/php_codesniffer/src/Ruleset.php
+		- vendor/squizlabs/php_codesniffer/src/Files/FileList.php
 	paths:
 		- .
 	scanDirectories:

@@ -1,0 +1,185 @@
+name: Quality
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+  push:
+    branches: [main]
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  project:
+    name: PHP ${{ matrix.php }} / ${{ matrix.database }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '8.2'
+            database: mysql:8.4
+            health-command: mysqladmin
+          - php: '8.5'
+            database: mariadb:11.4
+            health-command: mariadb-admin
+    services:
+      database:
+        image: ${{ matrix.database }}
+        env:
+          MYSQL_DATABASE: ran_example_test
+          MYSQL_ROOT_PASSWORD: disposable
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="${{ matrix.health-command }} ping --host=127.0.0.1 --user=root --password=disposable"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - name: Check out exact source revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
+      - name: Verify exact revision and locked manifests
+        env:
+          RAN_EXPECTED_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$RAN_EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$RAN_EXPECTED_SHA"
+          test -f composer.json
+          test -f composer.lock
+
+      - name: Read exact Core fixture identity
+        id: host
+        run: |
+          set -euo pipefail
+          test "$(jq -er .repository host-contract.json)" = RocketsAreNostalgic/ran-booster
+          host_commit="$(jq -er .commit host-contract.json)"
+          [[ "$host_commit" =~ ^[0-9a-f]{40}$ ]]
+          printf 'commit=%s\n' "$host_commit" >> "$GITHUB_OUTPUT"
+
+      - name: Check out pinned Core source fixture
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: RocketsAreNostalgic/ran-booster
+          ref: ${{ steps.host.outputs.commit }}
+          path: .ci-host
+          persist-credentials: false
+
+      - name: Keep the host fixture outside maintained Example source
+        run: |
+          set -euo pipefail
+          host_path="$RUNNER_TEMP/ran-example-core"
+          mv .ci-host "$host_path"
+          printf 'RAN_BOOSTER_CORE_PATH=%s\n' "$host_path" >> "$GITHUB_ENV"
+
+      - name: Set up PHP and WP-CLI
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: zip, mysqli
+          coverage: none
+          tools: composer:v2, wp-cli:2.12.0
+
+      - name: Validate and install exact locked dependencies
+        run: |
+          set -euo pipefail
+          composer validate --strict --no-check-publish
+          composer install --no-interaction --prefer-dist --no-progress
+          # Core's own contract permits its intentional exact beta dependency pins.
+          composer --working-dir="$RAN_BOOSTER_CORE_PATH" validate --strict --no-check-publish --no-check-all
+          composer --working-dir="$RAN_BOOSTER_CORE_PATH" install --no-dev --no-interaction --prefer-dist --no-progress
+
+      - name: Run canonical quality contract
+        run: composer check
+
+      - name: Require release-driving PR metadata for runtime uptake
+        if: >-
+          github.event_name == 'pull_request' &&
+          !(github.event.pull_request.user.login == 'github-actions[bot]' &&
+            github.event.pull_request.head.repo.full_name == github.repository &&
+            github.event.pull_request.head.ref == 'release-please--branches--main--components--ran-booster-github-example')
+        env:
+          RAN_RELEASE_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          RAN_RELEASE_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RAN_RELEASE_PR_TITLE: ${{ github.event.pull_request.title }}
+        run: python3 scripts/release.py classify --base "$RAN_RELEASE_BASE_SHA" --head "$RAN_RELEASE_HEAD_SHA"
+
+      - name: Verify bot release-candidate scope
+        if: >-
+          (github.event_name == 'pull_request' &&
+           github.event.pull_request.user.login == 'github-actions[bot]' &&
+           github.event.pull_request.head.repo.full_name == github.repository &&
+           github.event.pull_request.head.ref == 'release-please--branches--main--components--ran-booster-github-example') ||
+          (github.event_name == 'workflow_dispatch' &&
+           github.ref_name == 'release-please--branches--main--components--ran-booster-github-example')
+        env:
+          RAN_RELEASE_HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: python3 scripts/release.py candidate --base "$(git rev-parse origin/main)" --head "$RAN_RELEASE_HEAD_SHA"
+
+      - name: Build and independently verify deterministic runtime ZIP
+        run: |
+          set -euo pipefail
+          composer build
+          python3 scripts/test-archive.py
+          python3 scripts/release.py archive
+          first_digest="$(sha256sum dist/ran-booster-github-example.zip | cut -d ' ' -f 1)"
+          composer build
+          test "$(sha256sum dist/ran-booster-github-example.zip | cut -d ' ' -f 1)" = "$first_digest"
+          python3 scripts/test-archive.py
+          python3 scripts/release.py archive
+
+      - name: Download the exact immutable Core runtime fixture
+        run: |
+          set -euo pipefail
+          tag="$(jq -er .tag host-contract.json)"
+          asset="$(jq -er .asset host-contract.json)"
+          digest="$(jq -er .asset_sha256 host-contract.json)"
+          [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]
+          [[ "$asset" =~ ^ran-booster-[0-9A-Za-z.-]+\.zip$ ]]
+          [[ "$digest" =~ ^[0-9a-f]{64}$ ]]
+          core_archive="$RUNNER_TEMP/$asset"
+          curl --fail --location --retry 3 --proto '=https' --proto-redir '=https' \
+            "https://github.com/RocketsAreNostalgic/ran-booster/releases/download/$tag/$asset" --output "$core_archive"
+          printf '%s  %s\n' "$digest" "$core_archive" | sha256sum --check -
+          printf 'RAN_EXAMPLE_CORE_ARCHIVE=%s\n' "$core_archive" >> "$GITHUB_ENV"
+
+      - name: Verify clean installation and both passive load orders
+        run: bash scripts/release-install-smoke.sh
+
+      - name: Bind the tested runtime assets to this exact Quality revision
+        if: matrix.php == '8.2'
+        env:
+          RAN_SOURCE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: python3 scripts/release.py promote --source "$RAN_SOURCE_SHA"
+
+      - name: Retain the original tested assets for Profile B promotion
+        if: matrix.php == '8.2'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ran-booster-github-example-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dist/release/*
+          if-no-files-found: error
+          retention-days: 30
+
+  quality:
+    name: quality
+    if: ${{ always() }}
+    needs: [project]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every quality and installed lane
+        env:
+          PROJECT_RESULT: ${{ needs.project.result }}
+        run: test "$PROJECT_RESULT" = success

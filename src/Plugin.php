@@ -130,10 +130,10 @@ final class Plugin {
 		if ( ! defined( 'RAN_BOOSTER_PROVIDER_API_VERSION' ) || 15 !== RAN_BOOSTER_PROVIDER_API_VERSION
 			|| ! class_exists( ProviderRegistrationContext::class )
 			|| array() !== array_diff( array( 'begin_native_mutation', 'complete_native_mutation' ), get_class_methods( ProviderRegistrationContext::class ) ) ) {
-			return 'RAN Booster — GitHub Example requires compatible Booster Provider API 15 with native update checkpoints. GitHub support is already bundled with Booster.';
+			return __( 'RAN Booster — GitHub Example requires compatible Booster Provider API 15 with native update checkpoints. GitHub support is already bundled with Booster.', 'ran-booster-github-example' );
 		}
 		if ( ! is_file( dirname( __DIR__ ) . '/vendor/autoload.php' ) || ! is_file( dirname( __DIR__ ) . '/qualified-provider.json' ) || ! is_file( dirname( __DIR__ ) . '/ran-booster-github-example.gh-replacement.json' ) ) {
-			return 'RAN Booster — GitHub Example dependencies are missing. Install a complete built ZIP; GitHub support is already bundled with Booster.';
+			return __( 'RAN Booster — GitHub Example dependencies are missing. Install a complete built ZIP; GitHub support is already bundled with Booster.', 'ran-booster-github-example' );
 		}
 		return null;
 	}

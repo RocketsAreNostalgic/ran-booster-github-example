@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47d3040b1b371e2a19672e38ddd7a07b",
+    "content-hash": "d3f6b9a5fa57e2dac0901aade98cfa36",
     "packages": [
         {
             "name": "ran/booster-github-provider",
@@ -2952,7 +2952,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": ">=8.2 <8.6"
     },
     "platform-dev": {},
     "platform-overrides": {

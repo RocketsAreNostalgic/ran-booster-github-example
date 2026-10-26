@@ -40,6 +40,7 @@ def build() -> Path:
                 raise RuntimeError(f'Unowned build source: {name}')
             shutil.copyfile(source, stage / name)
         shutil.copytree(ROOT / 'src', stage / 'src')
+        shutil.copytree(ROOT / 'languages', stage / 'languages')
         shutil.copytree(ROOT / 'vendor', stage / 'vendor')
         env = os.environ.copy()
         env['COMPOSER_HOME'] = str(Path(directory) / 'composer-home')
