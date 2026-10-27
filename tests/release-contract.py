@@ -167,6 +167,15 @@ class ReleaseContracts(unittest.TestCase):
         self.assertIn('edited', quality)
         self.assertIn('composer check', quality)
         self.assertIn('release-install-smoke.sh', quality)
+        self.assertIn('python3 scripts/check-host.py', quality)
+        self.assertIn('scripts/build-release.sh', quality)
+        self.assertIn('scripts/verify-release.sh', quality)
+        self.assertIn('scripts/check-core-archive.py', quality)
+        self.assertIn('scripts/prepare-provider-candidate.py', quality)
+        self.assertIn('scripts/consumer-installed-smoke.sh', quality)
+        self.assertIn('ran_example_consumer_test', quality)
+        self.assertIn('database-client: mariadb', quality)
+        self.assertIn('database-client: mysql', quality)
         self.assertIn('needs: [project]', quality)
         self.assertIn('PROJECT_RESULT" = success', quality)
         self.assertNotIn('pull_request_target', quality)
@@ -198,7 +207,8 @@ class ReleaseContracts(unittest.TestCase):
     def test_installed_probe_includes_its_strict_namespaced_file(self):
         smoke = (ROOT / 'scripts/release-install-smoke.sh').read_text()
         commands = [line.strip() for line in smoke.splitlines() if ' eval-file ' in line]
-        self.assertEqual(commands, [
+        self.assertTrue(all('--use-include' in command for command in commands))
+        self.assertEqual([command for command in commands if 'tests/release-installed.php' in command], [
             'RAN_EXAMPLE_EXPECTED_ORDER="$order" wp --path="$site_root" eval-file "$repo_root/tests/release-installed.php" --use-include',
         ])
 
