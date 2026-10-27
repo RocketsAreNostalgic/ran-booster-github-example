@@ -26,9 +26,11 @@ jobs:
           - php: '8.2'
             database: mysql:8.4
             health-command: mysqladmin
+            database-client: mysql
           - php: '8.5'
             database: mariadb:11.4
             health-command: mariadb-admin
+            database-client: mariadb
     services:
       database:
         image: ${{ matrix.database }}
@@ -147,6 +149,7 @@ jobs:
           version="$(jq -er .fixture_version host-contract.json)"
           [[ "$host_commit" =~ ^[0-9a-f]{40}$ ]]
           [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]
+          python3 scripts/check-host.py
           bash "$RAN_BOOSTER_CORE_PATH/scripts/build-release.sh" "$host_commit" "$version"
           core_archive="$RAN_BOOSTER_CORE_PATH/build/ran-booster-$version.zip"
           bash "$RAN_BOOSTER_CORE_PATH/scripts/verify-release.sh" "$core_archive" "$version" "$host_commit"
@@ -180,12 +183,13 @@ jobs:
           PROVIDER_COMMIT: ${{ steps.provider.outputs.commit }}
           HOST_COMMIT: ${{ steps.host.outputs.commit }}
           DATABASE_CONTAINER: ${{ job.services.database.id }}
+          DATABASE_CLIENT: ${{ matrix.database-client }}
         run: |
           set -euo pipefail
           provider_path="$RUNNER_TEMP/ran-example-provider"
           mv .ci-provider "$provider_path"
           test "$(git -C "$provider_path" rev-parse HEAD)" = "$PROVIDER_COMMIT"
-          docker exec "$DATABASE_CONTAINER" mysql -uroot -pdisposable -e 'CREATE DATABASE ran_example_consumer_test'
+          docker exec "$DATABASE_CONTAINER" "$DATABASE_CLIENT" -uroot -pdisposable -e 'CREATE DATABASE ran_example_consumer_test'
           python3 scripts/prepare-provider-candidate.py \
             --provider-root "$provider_path" --provider-sha "$PROVIDER_COMMIT" \
             --host-root "$RAN_BOOSTER_CORE_PATH" --host-sha "$HOST_COMMIT" \
