@@ -200,6 +200,9 @@ final class Installed {
 				++$downloads;
 				$streams[] = $arguments['filename'];
 				$body      = '';
+			} elseif ( $base . '/commits/' . $tag === $url ) {
+				self::check( 'application/vnd.github.sha' === ( $arguments['headers']['Accept'] ?? null ), 'Commit request must accept the raw SHA representation.' );
+				$body = str_repeat( 'a', 40 );
 			} else {
 				$payload = match ( $url ) {
 					$base, 'https://api.github.com/repositories/123456789' => array(
@@ -212,7 +215,6 @@ final class Installed {
 					),
 					$base . '/releases?per_page=20&page=1' => array( $release ),
 					$base . '/releases/424007053', $base . '/releases/tags/' . $tag => $release,
-					$base . '/commits/' . $tag => array( 'sha' => str_repeat( 'a', 40 ) ),
 					default => throw new RuntimeException( 'Every uncontrolled HTTP request is refused: ' . $url ),
 				};
 				$body = wp_json_encode( $payload );
