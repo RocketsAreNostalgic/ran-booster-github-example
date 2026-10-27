@@ -62,6 +62,7 @@
       "@check:host",
       "@test:unit",
       "@test:host-contract",
+      "@test:core-archive",
       "@test:quality-contract",
       "@test:release-contract",
       "@test:consumer-preparation"
@@ -81,6 +82,7 @@
     ],
     "check:host": "python3 scripts/check-host.py",
     "test:host-contract": "python3 tests/host-contract.py",
+    "test:core-archive": "python3 tests/core-archive.py",
     "i18n:pot": "python3 scripts/make-pot.py",
     "i18n:check": "python3 scripts/make-pot.py --check",
     "release:check": "python3 scripts/release.py check",

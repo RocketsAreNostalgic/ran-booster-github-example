@@ -7,6 +7,7 @@ test -n "${RUNNER_TEMP:-}"
 test -n "${RAN_EXAMPLE_CORE_ARCHIVE:-}"
 test -f "$RAN_EXAMPLE_CORE_ARCHIVE"
 if [[ "${RAN_EXAMPLE_CONSUMER_PROOF:-}" != 1 ]]; then
+	python3 "$repo_root/scripts/check-core-archive.py" "$RAN_EXAMPLE_CORE_ARCHIVE"
 	test -f "$repo_root/dist/ran-booster-github-example.zip"
 fi
 site_root=$(mktemp -d "$RUNNER_TEMP/ran-example-install.XXXXXX")
