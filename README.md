@@ -54,8 +54,10 @@ Development checks also require Composer 2, Python 3.10 or newer and WP-CLI
 frontend build. `host-contract.json` identifies the exact Core source revision
 used for qualification. Check out that revision in a separate directory and
 install its locked production dependencies with `composer install --no-dev`.
-The recorded host is a test fixture, rather than an additional runtime version
-restriction on compatible Booster installations.
+The recorded host is a source-built test fixture, rather than an additional runtime version
+restriction on compatible Booster installations. Its version is the pinned source header,
+not a claim that this commit was published as that release. CI builds and verifies the
+fixture ZIP from the pinned commit and checks its recorded digest before installation.
 
 ```sh
 git clone https://github.com/RocketsAreNostalgic/ran-booster-github-example.git
