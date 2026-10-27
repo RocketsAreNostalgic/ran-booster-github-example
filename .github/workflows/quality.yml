@@ -156,6 +156,43 @@ jobs:
       - name: Verify clean installation and both passive load orders
         run: bash scripts/release-install-smoke.sh
 
+      - name: Read the locked Provider source identity
+        id: provider
+        run: |
+          set -euo pipefail
+          test "$(jq -er '[.packages[] | select(.name == "ran/booster-github-provider")] | length' composer.lock)" = 1
+          test "$(jq -er '.packages[] | select(.name == "ran/booster-github-provider") | .source.url' composer.lock)" = https://github.com/RocketsAreNostalgic/ran-booster-github-provider.git
+          provider_commit="$(jq -er '.packages[] | select(.name == "ran/booster-github-provider") | .source.reference' composer.lock)"
+          [[ "$provider_commit" =~ ^[0-9a-f]{40}$ ]]
+          printf 'commit=%s\n' "$provider_commit" >> "$GITHUB_OUTPUT"
+
+      - name: Check out the locked Provider source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: RocketsAreNostalgic/ran-booster-github-provider
+          ref: ${{ steps.provider.outputs.commit }}
+          path: .ci-provider
+          persist-credentials: false
+
+      - name: Exercise installed Provider consumer
+        env:
+          RAN_EXAMPLE_DB_NAME: ran_example_consumer_test
+          PROVIDER_COMMIT: ${{ steps.provider.outputs.commit }}
+          HOST_COMMIT: ${{ steps.host.outputs.commit }}
+          DATABASE_CONTAINER: ${{ job.services.database.id }}
+        run: |
+          set -euo pipefail
+          provider_path="$RUNNER_TEMP/ran-example-provider"
+          mv .ci-provider "$provider_path"
+          test "$(git -C "$provider_path" rev-parse HEAD)" = "$PROVIDER_COMMIT"
+          docker exec "$DATABASE_CONTAINER" mysql -uroot -pdisposable -e 'CREATE DATABASE ran_example_consumer_test'
+          python3 scripts/prepare-provider-candidate.py \
+            --provider-root "$provider_path" --provider-sha "$PROVIDER_COMMIT" \
+            --host-root "$RAN_BOOSTER_CORE_PATH" --host-sha "$HOST_COMMIT" \
+            --output "$RUNNER_TEMP/ran-example-consumer"
+          RAN_PROVIDER_CONSUMER_ASSEMBLY="$RUNNER_TEMP/ran-example-consumer" \
+            bash scripts/consumer-installed-smoke.sh
+
       - name: Bind the tested runtime assets to this exact Quality revision
         if: matrix.php == '8.2'
         env:
