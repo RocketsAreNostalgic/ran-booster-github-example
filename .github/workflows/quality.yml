@@ -142,17 +142,17 @@ jobs:
           python3 scripts/test-archive.py
           python3 scripts/release.py archive
 
-      - name: Build and verify the exact Core source fixture
+      - name: Download and verify the published Core fixture
         run: |
           set -euo pipefail
-          host_commit="$(jq -er .commit host-contract.json)"
-          version="$(jq -er .fixture_version host-contract.json)"
-          [[ "$host_commit" =~ ^[0-9a-f]{40}$ ]]
-          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]
           python3 scripts/check-host.py
-          bash "$RAN_BOOSTER_CORE_PATH/scripts/build-release.sh" "$host_commit" "$version"
-          core_archive="$RAN_BOOSTER_CORE_PATH/build/ran-booster-$version.zip"
-          bash "$RAN_BOOSTER_CORE_PATH/scripts/verify-release.sh" "$core_archive" "$version" "$host_commit"
+          tag="$(jq -er .tag host-contract.json)"
+          asset="$(jq -er .asset host-contract.json)"
+          [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]
+          [[ "$asset" =~ ^ran-booster-[0-9A-Za-z.-]+\.zip$ ]]
+          core_archive="$RUNNER_TEMP/$asset"
+          curl --fail --location --retry 3 --proto '=https' --proto-redir '=https' \
+            "https://github.com/RocketsAreNostalgic/ran-booster/releases/download/$tag/$asset" --output "$core_archive"
           python3 scripts/check-core-archive.py "$core_archive"
           printf 'RAN_EXAMPLE_CORE_ARCHIVE=%s\n' "$core_archive" >> "$GITHUB_ENV"
 

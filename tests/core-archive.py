@@ -23,17 +23,17 @@ class CoreArchiveTest(unittest.TestCase):
                       'version': '1.0.0-beta.39', 'commit': 'a' * 40}
             with zipfile.ZipFile(archive, 'w') as bundle:
                 bundle.writestr('ran-booster/ran-booster-release.json', json.dumps(marker))
-            contract = {'archive_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
-                        'fixture_version': marker['version'], 'commit': marker['commit']}
+            contract = {'asset_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
+                        'tag': 'v' + marker['version'], 'commit': marker['commit']}
             module.check(archive, contract)
-            for key, value in [('archive_sha256', '0' * 64), ('commit', 'b' * 40),
-                               ('fixture_version', '1.0.0-beta.40')]:
+            for key, value in [('asset_sha256', '0' * 64), ('commit', 'b' * 40),
+                               ('tag', 'v1.0.0-beta.40')]:
                 altered = copy.deepcopy(contract)
                 altered[key] = value
                 with self.assertRaises(ValueError):
                     module.check(archive, altered)
             archive.write_bytes(b'not a zip')
-            contract['archive_sha256'] = hashlib.sha256(archive.read_bytes()).hexdigest()
+            contract['asset_sha256'] = hashlib.sha256(archive.read_bytes()).hexdigest()
             with self.assertRaises(zipfile.BadZipFile):
                 module.check(archive, contract)
 

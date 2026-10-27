@@ -14,7 +14,7 @@ container dependency or import Core into the distributed plugin.
 - Install from `composer.lock`. Keep PHP declarations, compatibility rules,
   PHPStan semantics, documentation and CI aligned. Do not delete the lock or
   silently increase the PHP floor to match Starter.
-- `host-contract.json` records the exact Core source fixture, built ZIP digest
+- `host-contract.json` records the exact published Core fixture, release ZIP digest
   and Provider API. `RAN_BOOSTER_CORE_PATH` must identify that clean Git checkout
   with its locked **production** Composer dependencies. It is a qualification
   fixture, not an additional runtime version gate.
