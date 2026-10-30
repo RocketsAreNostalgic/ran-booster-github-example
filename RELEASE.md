@@ -63,14 +63,16 @@ with MariaDB 11.4 on WordPress 7.0.
 Each lane installs Example's complete lock and Core's production-only lock,
 verifies the host contract, runs `composer check`, builds and tests the ZIP twice
 with identical digests, checks first-party PHP archive bytes against maintained
-source, and builds the Core fixture ZIP from the pinned source commit. The Core
-verifier checks the archive against that commit and its locked dependencies; the
-fixture contract checks its digest and provenance before installation. Each lane
-activates the Example and source-built Core ZIPs in disposable WordPress and
-checks both plugin load orders. It also prepares the locked Provider as a candidate
-and exercises its installed consumer in a separate disposable database. The Core
-fixture is not evidence of a published Core release. The terminal `quality` job
-requires every matrix lane to succeed.
+source, and downloads the published Core release ZIP recorded by the fixture
+contract. The archive digest and embedded commit and version must match the
+contract before installation. Each lane activates the Example and published Core
+ZIPs in disposable WordPress and checks both plugin load orders. A separate
+published-Core consumer proof uses those same genuine release bytes and the normal
+Example package for release discovery, verified installation, explicit adoption,
+consumer operations, protocol-7 shared-runtime checks and incompatible-copy refusal.
+It also prepares the locked Provider as a candidate and exercises its installed
+consumer in another disposable database; that candidate proof does not replace
+published Core qualification. The terminal `quality` job requires every matrix lane to succeed.
 
 The PHP 8.2 lane retains:
 

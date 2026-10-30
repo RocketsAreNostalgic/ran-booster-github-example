@@ -45,19 +45,20 @@ second records its outcome. The plugin does not use a private Booster container.
 
 Use PHP 8.2–8.5, WordPress 7.0 or newer, and a compatible Booster build
 with Provider beta.20, Provider API 15, and the native-update checkpoints. Booster
-and Example must contain matching Provider files. PHP may load Booster's copy
-first; Example allows that reuse only when those files match the dependency file
-hashes it records.
+and Example must contain matching Provider, Release Updater and Updater Support
+files. The current qualification pairs published Booster beta.41 with genuine
+Release Updater beta.15 (runtime protocol 7). PHP may load either plugin's copy
+first; Example allows reuse only when the loaded files match its recorded
+qualified dependency hashes.
 
 Development checks also require Composer 2, Python 3.10 or newer and WP-CLI
 2.12.0. The quality profile is `wordpress-plugin`; this PHP-only plugin has no
 frontend build. `host-contract.json` identifies the exact Core source revision
 used for qualification. Check out that revision in a separate directory and
 install its locked production dependencies with `composer install --no-dev`.
-The recorded host is a source-built test fixture, rather than an additional runtime version
-restriction on compatible Booster installations. Its version is the pinned source header,
-not a claim that this commit was published as that release. CI builds and verifies the
-fixture ZIP from the pinned commit and checks its recorded digest before installation.
+The recorded host is a published release fixture, rather than an additional runtime
+version restriction on compatible Booster installations. CI downloads its release ZIP
+and checks the recorded digest and provenance before installation.
 
 ```sh
 git clone https://github.com/RocketsAreNostalgic/ran-booster-github-example.git
@@ -79,6 +80,18 @@ coverage and negative controls, tests, gettext parity and dependency qualificati
 The host check verifies Core's revision, tracked source bytes, production lock and
 matching runtime dependencies. `composer i18n:pot` regenerates the tracked runtime
 translation catalogue; `composer i18n:check` checks it without changing source.
+
+Runtime eligibility is Provider API 15 plus the native-update checkpoints used
+by the Example. The exact Core commit, tree, lock and published ZIP in
+`host-contract.json` make tests reproducible; they are not a production check for
+one Core release. Shared-library hashes protect the PHP namespaces in either
+load order and remain exact even when Core's public API is unchanged.
+
+A Core-only UI change can require fresh compatibility evidence without changing
+or releasing the Example. Refreshing a qualification fixture changes test
+metadata. Adopting different bundled dependency bytes, as with updater beta.15,
+changes the Example package and requires its own qualified dependency update.
+The broader newer-Core compatibility lane discussed in issue #15 remains separate.
 
 Use `fix(deps):` for production dependency updates so Release Please proposes an
 Example release too. Development-only dependency updates may use `chore(deps):`.

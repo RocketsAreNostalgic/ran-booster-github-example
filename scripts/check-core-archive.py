@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the source-built Core fixture before installing it."""
+"""Check the published Core fixture before installing it."""
 import hashlib
 import json
 from pathlib import Path
@@ -10,12 +10,12 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 def check(archive: Path, contract: dict) -> None:
-    if hashlib.sha256(archive.read_bytes()).hexdigest() != contract['archive_sha256']:
+    if hashlib.sha256(archive.read_bytes()).hexdigest() != contract['asset_sha256']:
         raise ValueError('Core fixture archive digest differs from the contract')
     with zipfile.ZipFile(archive) as bundle:
         marker = json.loads(bundle.read('ran-booster/ran-booster-release.json'))
     if marker != {'schema': 'ran-booster-core-release', 'schema_version': 1,
-                  'version': contract['fixture_version'], 'commit': contract['commit']}:
+                  'version': contract['tag'].removeprefix('v'), 'commit': contract['commit']}:
         raise ValueError('Core fixture archive provenance differs from the contract')
 
 

@@ -22,7 +22,7 @@ if ( ! defined( 'RAN_BOOSTER_PROVIDER_API_VERSION' ) || 15 !== RAN_BOOSTER_PROVI
 // Both files are local fixture metadata, not remote requests.
 $ran_booster_github_example_contract = json_decode( (string) file_get_contents( dirname( __DIR__ ) . '/host-contract.json' ), true, 8, JSON_THROW_ON_ERROR ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local fixture metadata.
 $ran_booster_github_example_marker   = json_decode( (string) file_get_contents( WP_PLUGIN_DIR . '/ran-booster/ran-booster-release.json' ), true, 8, JSON_THROW_ON_ERROR ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local installed metadata.
-if ( ! is_array( $ran_booster_github_example_marker ) || 'ran-booster-core-release' !== ( $ran_booster_github_example_marker['schema'] ?? null ) || 1 !== ( $ran_booster_github_example_marker['schema_version'] ?? null ) || ( $ran_booster_github_example_marker['commit'] ?? null ) !== $ran_booster_github_example_contract['commit'] || ( $ran_booster_github_example_marker['version'] ?? null ) !== $ran_booster_github_example_contract['fixture_version'] ) {
+if ( ! is_array( $ran_booster_github_example_marker ) || 'ran-booster-core-release' !== ( $ran_booster_github_example_marker['schema'] ?? null ) || 1 !== ( $ran_booster_github_example_marker['schema_version'] ?? null ) || ( $ran_booster_github_example_marker['commit'] ?? null ) !== $ran_booster_github_example_contract['commit'] || ( $ran_booster_github_example_marker['version'] ?? null ) !== substr( $ran_booster_github_example_contract['tag'], 1 ) ) {
 	throw new RuntimeException( 'The installed Core fixture provenance differs from the contract.' );
 }
 ob_start();
