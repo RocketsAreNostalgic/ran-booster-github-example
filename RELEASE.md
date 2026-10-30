@@ -66,10 +66,13 @@ with identical digests, checks first-party PHP archive bytes against maintained
 source, and downloads the published Core release ZIP recorded by the fixture
 contract. The archive digest and embedded commit and version must match the
 contract before installation. Each lane activates the Example and published Core
-ZIPs in disposable WordPress and checks both plugin load orders. It also prepares
-the locked Provider as a candidate and exercises its installed consumer in a
-separate disposable database; that candidate proof does not replace published Core
-qualification. The terminal `quality` job requires every matrix lane to succeed.
+ZIPs in disposable WordPress and checks both plugin load orders. A separate
+published-Core consumer proof uses those same genuine release bytes and the normal
+Example package for release discovery, verified installation, explicit adoption,
+consumer operations, protocol-7 shared-runtime checks and incompatible-copy refusal.
+It also prepares the locked Provider as a candidate and exercises its installed
+consumer in another disposable database; that candidate proof does not replace
+published Core qualification. The terminal `quality` job requires every matrix lane to succeed.
 
 The PHP 8.2 lane retains:
 

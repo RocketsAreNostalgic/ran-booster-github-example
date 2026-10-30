@@ -213,6 +213,24 @@ class ReleaseContracts(unittest.TestCase):
             'RAN_EXAMPLE_EXPECTED_ORDER="$order" wp --path="$site_root" eval-file "$repo_root/tests/release-installed.php" --use-include',
         ])
 
+    def test_published_consumer_retains_exact_archives_and_separate_candidate_lane(self):
+        quality = (ROOT / '.github/workflows/quality.yml').read_text()
+        published = (ROOT / 'scripts/published-consumer-smoke.sh').read_text()
+        runner = (ROOT / 'scripts/release-install-smoke.sh').read_text()
+        self.assertIn('ran_example_published_test', quality)
+        self.assertIn('ran_example_consumer_test', quality)
+        self.assertIn('bash scripts/published-consumer-smoke.sh', quality)
+        self.assertIn('bash scripts/consumer-installed-smoke.sh', quality)
+        self.assertIn('scripts/check-core-archive.py', published)
+        self.assertIn('scripts/check-host.py', published)
+        self.assertIn('scripts/qualify-dependencies.php', published)
+        self.assertIn('scripts/release.py" archive', published)
+        self.assertNotIn('prepare-provider-candidate.py', published)
+        self.assertNotIn('build-release.sh', published)
+        self.assertIn("'candidate':False,'published':False,'published_host':True", published)
+        self.assertIn('RAN_EXAMPLE_PUBLISHED_CONSUMER_PROOF=1', published)
+        self.assertIn('installed.php" refuse --use-include', runner)
+
 
 if __name__ == '__main__':
     unittest.main()

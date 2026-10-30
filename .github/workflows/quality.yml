@@ -159,6 +159,16 @@ jobs:
       - name: Verify clean installation and both passive load orders
         run: bash scripts/release-install-smoke.sh
 
+      - name: Exercise the ordinary Example consumer against published Core
+        env:
+          RAN_EXAMPLE_DB_NAME: ran_example_published_test
+          DATABASE_CONTAINER: ${{ job.services.database.id }}
+          DATABASE_CLIENT: ${{ matrix.database-client }}
+        run: |
+          set -euo pipefail
+          docker exec "$DATABASE_CONTAINER" "$DATABASE_CLIENT" -uroot -pdisposable -e 'CREATE DATABASE ran_example_published_test'
+          bash scripts/published-consumer-smoke.sh
+
       - name: Read the locked Provider source identity
         id: provider
         run: |

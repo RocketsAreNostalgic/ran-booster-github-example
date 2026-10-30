@@ -1,5 +1,5 @@
 <?php
-/** Real WordPress consumer proof using the prepared candidate archives. */
+/** Real WordPress consumer proof for separately identified packaged assemblies. */
 
 declare(strict_types=1);
 
@@ -42,13 +42,33 @@ final class Installed {
 		$site = realpath( (string) getenv( 'RAN_BOOSTER_WORDPRESS_PATH' ) );
 		self::check( defined( 'WP_CLI' ) && WP_CLI && '1' === getenv( 'RAN_PROVIDER_CONSUMER_DISPOSABLE' ) && false !== $site && rtrim( ABSPATH, '/' ) === $site, 'Exact disposable CLI site required.' );
 		self::check( current_user_can( 'manage_options' ) && current_user_can( 'activate_plugins' ) && current_user_can( 'install_plugins' ), 'Disposable administrator required.' );
-		$receipt = self::receipt();
-		$host    = $receipt['host']['source_root'];
+		$receipt        = self::receipt();
+		$published_host = '1' === getenv( 'RAN_EXAMPLE_PUBLISHED_CONSUMER_PROOF' );
+		if ( $published_host ) {
+			self::check( true === ( $receipt['published_host'] ?? null ) && false === ( $receipt['candidate'] ?? null ) && false === ( $receipt['published'] ?? null ), 'Published host evidence must not claim candidate substitution or Example publication.' );
+			self::check( hash_file( 'sha256', $receipt['host']['archive'] ) === $receipt['host']['sha256'], 'Published Core ZIP receipt mismatch.' );
+			self::verify_archive( $receipt['host']['archive'], 'ran-booster' );
+		}
+		$host = $receipt['host']['source_root'];
 		require_once $host . '/tests/fixtures/github-replacement/fixture.php';
 		\RAN_Booster_GitHubReplacementFixture\Fixture::guard();
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		$container = require $host . '/tests/WordPress/core-container-fixture.php';
 		$selection = $container->make( GitHubProviderSelection::class );
+		if ( 'refuse' === $phase ) {
+			self::check( $published_host, 'The installed refusal belongs to published-host qualification.' );
+			require __DIR__ . '/incompatible-updater.php';
+			$refused = false;
+			try {
+				Plugin::load_dependencies();
+			} catch ( RuntimeException $failure ) {
+				$refused = str_contains( $failure->getMessage(), 'incompatible' );
+			}
+			self::check( $refused, 'The installed Example admitted an unqualified updater namespace copy.' );
+			self::verify_archive( $receipt['host']['archive'], 'ran-booster' );
+			self::verify_archive( $receipt['example']['archive'] );
+			return;
+		}
 		if ( 'prepare' === $phase ) {
 			$secrets = $container->make( SecretsFile::class );
 			$storage = ( new \RAN\Secrets\SecretsStorageProvisioner( secrets: $secrets ) )->status();
@@ -111,11 +131,36 @@ final class Installed {
 		self::check( '' === ob_get_clean(), 'Installed dependencies are unavailable.' );
 		$expected = json_decode( (string) getenv( 'RAN_EXAMPLE_EXPECTED_ORDER' ), true, 4, JSON_THROW_ON_ERROR );
 		self::check( get_option( 'active_plugins' ) === $expected, 'Fresh request used a different plugin load order.' );
+		if ( $published_host ) {
+			self::check_shared_updater();
+		}
 		self::install( $container->make( ProspectiveReleaseFacade::class ), $receipt, false );
 	}
 
+	/** Prove both installed beta.15 copies share the active protocol-7 runtime. */
+	private static function check_shared_updater(): void {
+		$relative = '/vendor/ran/wp-release-updater/';
+		$core     = WP_PLUGIN_DIR . '/ran-booster' . $relative;
+		$example  = WP_PLUGIN_DIR . '/ran-booster-github-example' . $relative;
+		foreach ( array( $core, $example ) as $copy ) {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Read immutable installed dependency metadata for the disposable composition proof.
+			$metadata = json_decode( (string) file_get_contents( $copy . 'runtime-copy.json' ), true, 8, JSON_THROW_ON_ERROR );
+			self::check( 7 === ( $metadata['runtime_protocol'] ?? null ) && '1.0.0-beta.15' === ( $metadata['package_version'] ?? null ), 'Installed updater must be genuine beta.15 / protocol 7.' );
+		}
+		foreach ( array( 'bootstrap.php', 'runtime.php', 'runtime-copy.json' ) as $file ) {
+			self::check( hash_file( 'sha256', $core . $file ) === hash_file( 'sha256', $example . $file ), 'Installed shared updater bytes differ.' );
+		}
+		$broker    = $GLOBALS['ran_wp_release_updater_v1_broker'] ?? null;
+		$registrar = require $example . 'bootstrap.php';
+		if ( ! is_object( $registrar ) || ! is_callable( array( $registrar, 'diagnostics' ) ) ) {
+			throw new RuntimeException( 'Installed updater registrar is unavailable.' );
+		}
+		$diagnostics = $registrar->diagnostics();
+		self::check( is_object( $broker ) && ( $GLOBALS['ran_wp_release_updater_v1_broker'] ?? null ) === $broker && 7 === ( $diagnostics['protocol_version'] ?? null ) && 'active' === ( $diagnostics['state'] ?? null ) && 1 <= ( $diagnostics['candidate_count'] ?? 0 ), 'Both installed copies must share an active protocol-7 broker.' );
+	}
+
 	/** Verify every installed payload file against the archive passed to the updater. */
-	private static function verify_archive( string $archive ): void {
+	private static function verify_archive( string $archive, string $slug = 'ran-booster-github-example' ): void {
 		$zip = new \ZipArchive();
 		self::check( true === $zip->open( $archive ), 'Cannot reopen the admitted archive.' );
 		$expected = array();
@@ -126,7 +171,7 @@ final class Installed {
 				if ( ! is_string( $name ) || str_ends_with( $name, '/' ) ) {
 					continue;
 				}
-				self::check( str_starts_with( $name, 'ran-booster-github-example/' ) && ! str_contains( $name, '..' ), 'Unexpected archive member.' );
+				self::check( str_starts_with( $name, $slug . '/' ) && ! str_contains( $name, '..' ), 'Unexpected archive member.' );
 				$file  = WP_PLUGIN_DIR . '/' . $name;
 				$bytes = $zip->getFromIndex( $index );
 				self::check( is_string( $bytes ) && ! is_link( $file ) && is_file( $file ) && hash( 'sha256', $bytes ) === hash_file( 'sha256', $file ), 'Updater installed bytes differ from the admitted archive.' );
@@ -136,7 +181,7 @@ final class Installed {
 			$zip->close();
 		}
 		$actual   = array();
-		$iterator = new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( WP_PLUGIN_DIR . '/ran-booster-github-example', \FilesystemIterator::SKIP_DOTS ) );
+		$iterator = new \RecursiveIteratorIterator( new \RecursiveDirectoryIterator( WP_PLUGIN_DIR . '/' . $slug, \FilesystemIterator::SKIP_DOTS ) );
 		foreach ( $iterator as $file ) {
 			self::check( ! $file->isLink(), 'Installed payload contains a symlink.' );
 			if ( $file->isFile() ) {
