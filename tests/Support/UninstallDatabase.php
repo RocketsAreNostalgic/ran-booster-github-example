@@ -28,7 +28,7 @@ final class UninstallDatabase {
 				$this->last_error = 'Synthetic read failure';
 				return null;
 			}
-			if ( ! is_array( $data[1] ?? null ) || $this->options !== ( $data[1][0] ?? null ) || ! is_string( $data[1][1] ?? null ) ) {
+			if ( ! is_array( $data[1] ?? null ) || ( $data[1][0] ?? null ) !== $this->options || ! is_string( $data[1][1] ?? null ) ) {
 				throw new \RuntimeException( 'Expected an exact option lookup.' );
 			}
 			return isset( $GLOBALS['ran_booster_github_example_options'][ $data[1][1] ] ) ? '1' : null;
