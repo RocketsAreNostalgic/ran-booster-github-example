@@ -2,7 +2,7 @@
     "schema": 1,
     "packages": {
         "ran/booster-github-provider": {
-            "reference": "1e08b01eda61950dbdd3f119ea23fdf2a5dfb99d",
+            "reference": "65cd4eacc80dadfc92503cc00a3af810f9016b99",
             "files": {
                 "composer.json": "62b8491d23463cbdae39dd9a6ea83cb3aee0fb42ee793e15010d8f123a4547e5",
                 "languages/ran-booster-github-provider.pot": "e111365809cce01facca45f168fa307f3881c875f5e559843f8b4095c211fc48",
@@ -26,7 +26,7 @@
                 "src/ReleaseDeployments/WorkflowAssistance/TemplatePack.php": "ae1b6cf044c993585e6fb40d062b9e0727a6509fcdfdba1ebc6bd7f190e815df",
                 "src/ReleaseDeployments/WorkflowAssistance/TemplatePackRepositoryClient.php": "ee034cec58f706651384aba64a70912c1cd9bd10f5338636928011358f047cba",
                 "src/ReleaseDeployments/WorkflowAssistance/WorkflowApplicationCoordinator.php": "ef644553b027450c0acc903aaa1a9da25c469320d4f4ee441cf72e2f5b639d59",
-                "src/ReleaseDeployments/WorkflowAssistance/WorkflowAssistanceState.php": "2b895589d5e0a154f546924f8c3801a1174e03516fd94f80147190d40a1ea49d",
+                "src/ReleaseDeployments/WorkflowAssistance/WorkflowAssistanceState.php": "e41943728ecaab4bcb565cd924d7eb41eefa6a161145f67839b2432e98eb0076",
                 "src/RepositoryBrowser.php": "c63177bb84070fa2296375ce87bc2ee0a9e9d60a6d87dca94663d3b35b00dce6",
                 "src/RepositoryWebhookClient.php": "3197b7fd2bf25f3b9a462aea01c5e148b0b1b5f83aa75f571acaaa3a5aebed04",
                 "src/WebhookNormalizer.php": "c875982bcdd4981a073bf50984b94b66b5b4db16e8ec2b7f5ace489583cd27da",
@@ -34,11 +34,11 @@
             }
         },
         "ran/wp-release-updater": {
-            "reference": "2283850d81a3a5b0dfa7fee07beddaba8bf02883",
+            "reference": "aa17eb4dc49dcf6dfb70d3af0e8039a3a2512bef",
             "files": {
                 "bootstrap.php": "1194ffc646a48e2e8a140f07b9f3b7ab032f1fa887f625bdbc43a7e81be05f63",
                 "composer.json": "424a069878b4541abafaf555a1737a8ad741593986a5d3f919470bd68eb721f4",
-                "runtime-copy.json": "f9d96d80a0a4290658b9d9e33c4af5a068619bd5df7ca573dca8fdf4107eaaf5",
+                "runtime-copy.json": "84754f4d5135b685a54732c01502110467cad1006e3c1405675815fdb69f1b04",
                 "runtime.php": "5b368857c96ac2bcc3e57aad80118fd6c62ee7f648d0aedcf402cf5c24d36958",
                 "src/Archive/ArchiveScanResult.php": "470cd60014392a820b1c672f3570c02d5ee2f4d7a18e5638fee2bee6e11aff29",
                 "src/Archive/ArchiveScanner.php": "69d477a9175fcd1f5839b177dd2137a974760dce33d5359034166e72a2a489fb",
@@ -63,13 +63,13 @@
                 "src/Runtime/ReleaseFailure.php": "a425e355bf530f467d7407ecc44c6ddd2ac0d337e2a8dd2add42db05e89519e6",
                 "src/Runtime/ReleaseSource.php": "ead977d07c04d25bdad0b2e70535b4ea725b876ebc9dab01838a02237f4f1ce9",
                 "src/Runtime/RequestBroker.php": "9776bc51dae516bfaa5f6d031177b3cd953e16c644ab161db14b176de8f0dc0d",
-                "src/Runtime/RequestProtocolValidator.php": "04b834f79de6abf75447260b95f06b93ecca2c4aedd8a7eec20188ad1df19257",
+                "src/Runtime/RequestProtocolValidator.php": "60a555fbd5a1bc83973f4d9a466f3626e7a2b74bdbb750498ed092f2ffffdc4d",
                 "src/Runtime/RuntimeCopySelector.php": "5fa803e72be795d154012b8cc3900529378b8f58a2946fba744571da8dd4cad0",
                 "src/Runtime/SelectedRuntimeState.php": "490eb33e96f57966f69e1de8739b685683d8fd3748267cb2e6954be2274ebd71",
                 "src/WordPress/BindingFenceCoordinator.php": "b2ff5a9e438d8ea7820873cee24f55acc18a2dd87ae45b6527d667a89d6777fd",
                 "src/WordPress/BindingState.php": "b83e2a241eb2e0bbe7954ccb30b46d0c1a384d0fe0186868bcea82dc68a11bc0",
                 "src/WordPress/InstalledPackageResolver.php": "ac2a4eb483ae0f8cab321e8d10231397028d01a3d39cbdcb3ed9a7d44d1454a9",
-                "src/WordPress/NativePackageUpdater.php": "4336fc2005d2b830802b24a7fa45a6e78b7b4285e586c7e87e26347626fa04b5",
+                "src/WordPress/NativePackageUpdater.php": "da8f9814a286d96274a1a7cf0f7ba3b68579dd1f3b030301552e0308bf12da9a",
                 "src/WordPress/OwnedArchiveStore.php": "46b10d728b2412597ef308209b83b542dbde89176e611e476cc061a9c236c2cf",
                 "src/WordPress/PendingInstallState.php": "d792c27e1664dcd6d5e89c24bd6858089a1639ee7b367e460f15799e704a1592",
                 "src/WordPress/StagedPackageManifest.php": "e6ffd0e33f0f468b612a1dcb162bb0e116bf884ff9e4709471b924cbc3bb3b02"

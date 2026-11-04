@@ -17,16 +17,28 @@ final class UninstallDatabase {
 		return json_encode( array( $query, $args ), JSON_THROW_ON_ERROR );
 	}
 
-	public function get_var( string $query ): string {
-		$data = json_decode( $query, true, 8, JSON_THROW_ON_ERROR );
+	public function get_var( string $query ): ?string {
+		$this->last_error = '';
+		$data             = json_decode( $query, true, 8, JSON_THROW_ON_ERROR );
 		if ( ! is_array( $data ) || ! is_string( $data[0] ?? null ) ) {
 			throw new \RuntimeException( 'Malformed fixture SQL.' );
+		}
+		if ( str_starts_with( $data[0], 'SELECT 1 FROM' ) ) {
+			if ( ! empty( $GLOBALS['ran_booster_github_example_read_error'] ) ) {
+				$this->last_error = 'Synthetic read failure';
+				return null;
+			}
+			if ( ! is_array( $data[1] ?? null ) || $this->options !== ( $data[1][0] ?? null ) || ! is_string( $data[1][1] ?? null ) ) {
+				throw new \RuntimeException( 'Expected an exact option lookup.' );
+			}
+			return isset( $GLOBALS['ran_booster_github_example_options'][ $data[1][1] ] ) ? '1' : null;
 		}
 		return str_contains( $data[0], 'GET_LOCK' ) ? '7' : '1';
 	}
 
 	public function query( string $query ): int {
-		$data = json_decode( $query, true, 8, JSON_THROW_ON_ERROR );
+		$this->last_error = '';
+		$data             = json_decode( $query, true, 8, JSON_THROW_ON_ERROR );
 		if ( ! is_array( $data ) || ! is_string( $data[0] ?? null ) || ! str_starts_with( $data[0], 'DELETE FROM' ) || ! is_array( $data[1] ?? null ) || ! is_string( $data[1][1] ?? null ) ) {
 			throw new \RuntimeException( 'Only exact preview-index deletion is expected.' );
 		}

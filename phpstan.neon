@@ -16,6 +16,7 @@ parameters:
 		- %env.RAN_BOOSTER_CORE_PATH%/RAN
 	excludePaths:
 		analyseAndScan:
+			- %env.RAN_BOOSTER_CORE_PATH%/tests/Uninstall/UninstallBoundaryFunctions.php
 			- vendor/*
 			- dist/*
 			- .git/*

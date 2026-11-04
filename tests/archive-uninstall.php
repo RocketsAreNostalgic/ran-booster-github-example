@@ -42,7 +42,27 @@ $GLOBALS['wpdb'] = new UninstallDatabase();
 if ( in_array( $argv[2] ?? '', array( 'preloaded', 'modified-copy' ), true ) ) {
 	require dirname( $ran_booster_github_example_root ) . '/qualified-state.php';
 }
+if ( 'failed-delete' === ( $argv[2] ?? '' ) ) {
+	$GLOBALS['ran_booster_github_example_fail_delete'] = true;
+}
+if ( 'read-error' === ( $argv[2] ?? '' ) ) {
+	$GLOBALS['ran_booster_github_example_read_error'] = true;
+}
 $ran_booster_github_example_result = Plugin::uninstall();
+if ( 'read-error' === ( $argv[2] ?? '' ) ) {
+	if ( $ran_booster_github_example_result ) {
+		throw new \RuntimeException( 'An uncertain durable read must refuse.' );
+	}
+	$GLOBALS['ran_booster_github_example_read_error'] = false;
+	$ran_booster_github_example_result                = Plugin::uninstall();
+}
+if ( 'failed-delete' === ( $argv[2] ?? '' ) ) {
+	if ( $ran_booster_github_example_result || ! isset( $GLOBALS['ran_booster_github_example_options']['ran_booster_gh_wf_github_example_setup_records'] ) ) {
+		throw new \RuntimeException( 'A failed durable delete hidden by a negative cache must refuse.' );
+	}
+	$GLOBALS['ran_booster_github_example_fail_delete'] = false;
+	$ran_booster_github_example_result                 = Plugin::uninstall();
+}
 if ( in_array( $argv[2] ?? '', array( 'modified-copy', 'wrong-invocation', 'wrong-root' ), true ) ) {
 	if ( $ran_booster_github_example_result || 8 !== count( $GLOBALS['ran_booster_github_example_options'] ) || 3 !== count( $GLOBALS['ran_booster_github_example_transients'] ) || array() !== $GLOBALS['wpdb']->deleted ) {
 		throw new \RuntimeException( 'Unproven ownership must refuse without modifying any state.' );
@@ -52,8 +72,19 @@ if ( in_array( $argv[2] ?? '', array( 'modified-copy', 'wrong-invocation', 'wron
 if ( ! $ran_booster_github_example_result ) {
 	throw new \RuntimeException( 'Owned example cleanup failed.' );
 }
-if ( 6 !== count( $GLOBALS['ran_booster_github_example_options'] ) || 2 !== count( $GLOBALS['ran_booster_github_example_transients'] ) || array( 'ran_booster_gh_wf_github_example_preview_keys' ) !== $GLOBALS['wpdb']->deleted ) {
+if ( 6 !== count( $GLOBALS['ran_booster_github_example_options'] ) || 2 !== count( $GLOBALS['ran_booster_github_example_transients'] ) || array_diff( $GLOBALS['wpdb']->deleted, array( 'ran_booster_gh_wf_github_example_preview_keys' ) ) || array() === $GLOBALS['wpdb']->deleted ) {
 	throw new \RuntimeException( 'Cleanup crossed a namespace or retained owned state.' );
+}
+foreach ( array( 'ran_booster_github_provider_release_workflow_setup_records', 'ran_booster_github_provider_release_workflow_assessment_observations', 'ran_booster_github_provider_release_workflow_failure_history', 'ran_booster_release_deployments_setup_records', 'ran_booster_gh_wf_another_setup_records', 'ran_booster_activity' ) as $ran_booster_github_example_retained ) {
+	if ( array( 'synthetic' => true ) !== ( $GLOBALS['ran_booster_github_example_options'][ $ran_booster_github_example_retained ] ?? null ) ) {
+		throw new \RuntimeException( 'Unrelated durable state changed.' );
+	}
+}
+if ( array(
+	'ran_booster_github_provider_release_workflow_preview_' . str_repeat( 'a', 32 ) => 'bundled',
+	'ran_booster_gh_wf_another_preview_' . str_repeat( 'a', 32 ) => 'another',
+) !== $GLOBALS['ran_booster_github_example_transients'] ) {
+	throw new \RuntimeException( 'Unrelated preview state changed.' );
 }
 if ( class_exists( 'RAN\\BoosterGitHubProvider\\V1\\GitHubProvider', false ) || class_exists( 'RAN\\RepositoryProvider\\ProviderRegistry', false ) ) {
 	throw new \RuntimeException( 'Standalone uninstall loaded a provider factory or Core.' );
