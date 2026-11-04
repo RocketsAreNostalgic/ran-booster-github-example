@@ -73,7 +73,7 @@ function check_coverage( string $root ): void {
 		|| false !== ( $config['parameters']['treatPhpDocTypesAsCertain'] ?? null )
 		|| isset( $config['parameters']['bootstrapFiles'] )
 		|| array( '.' ) !== ( $config['parameters']['paths'] ?? null )
-		|| array( 'analyseAndScan' => array( 'vendor/*', 'dist/*', '.git/*', '.phpstan/*', '.phpunit.cache/*' ) ) !== ( $config['parameters']['excludePaths'] ?? null )
+		|| array( 'analyseAndScan' => array( '%env.RAN_BOOSTER_CORE_PATH%/tests/Uninstall/UninstallBoundaryFunctions.php', 'vendor/*', 'dist/*', '.git/*', '.phpstan/*', '.phpunit.cache/*' ) ) !== ( $config['parameters']['excludePaths'] ?? null )
 		|| isset( $config['parameters']['ignoreErrors'] ) || isset( $config['parameters']['fileExtensions'] ) ) {
 		throw new RuntimeException( 'Review weakened PHPStan level, inherited config or maintained-file scope.' );
 	}

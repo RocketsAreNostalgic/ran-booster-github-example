@@ -43,7 +43,7 @@ with zipfile.ZipFile(archive) as bundle:
             with (plugin / 'vendor' / package / 'composer.json').open('a') as metadata:
                 metadata.write('\n')
             subprocess.run([os.environ.get('PHP_BINARY', 'php'), str(ROOT / 'tests/archive-corrupt.php'), str(plugin)], check=True)
-    for mode in ['fresh', 'preloaded', 'modified-copy', 'wrong-invocation', 'wrong-root']:
+    for mode in ['fresh', 'preloaded', 'failed-delete', 'read-error', 'modified-copy', 'wrong-invocation', 'wrong-root']:
         with tempfile.TemporaryDirectory(prefix='ran-example-archive-test-') as directory:
             root = Path(directory)
             (root / 'RAN-EXAMPLE-DISPOSABLE').write_text('Synthetic archive fixture only; no WordPress installation.\n')
@@ -54,5 +54,5 @@ with zipfile.ZipFile(archive) as bundle:
                 with (root / 'qualified-state.php').open('a') as state_copy:
                     state_copy.write('\n// Deliberately unqualified historical/corrupt runtime bytes.\n')
             subprocess.run([os.environ.get('PHP_BINARY', 'php'), str(ROOT / 'tests/archive-uninstall.php'), str(plugin.resolve()), mode], check=True)
-print('Archive paths/runtime graph/normalized metadata; passive missing Core/old host/missing dependencies; corrupt bytes in all three packages refused before loading; standalone namespace cleanup (fresh/compatible preloaded) and refusal (modified copy/wrong invocation/wrong root): passed.')
+print('Archive paths/runtime graph/normalized metadata; passive missing Core/old host/missing dependencies; corrupt bytes in all three packages refused before loading; standalone namespace cleanup, failed deletion/read uncertainty and retry, and ownership refusal: passed.')
 print('sha256 ' + hashlib.sha256(archive.read_bytes()).hexdigest())

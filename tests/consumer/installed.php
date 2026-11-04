@@ -137,7 +137,7 @@ final class Installed {
 		self::install( $container->make( ProspectiveReleaseFacade::class ), $receipt, false );
 	}
 
-	/** Prove both installed beta.15 copies share the active protocol-7 runtime. */
+	/** Prove both installed beta.16 copies share the active protocol-7 runtime. */
 	private static function check_shared_updater(): void {
 		$relative = '/vendor/ran/wp-release-updater/';
 		$core     = WP_PLUGIN_DIR . '/ran-booster' . $relative;
@@ -145,7 +145,7 @@ final class Installed {
 		foreach ( array( $core, $example ) as $copy ) {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Read immutable installed dependency metadata for the disposable composition proof.
 			$metadata = json_decode( (string) file_get_contents( $copy . 'runtime-copy.json' ), true, 8, JSON_THROW_ON_ERROR );
-			self::check( 7 === ( $metadata['runtime_protocol'] ?? null ) && '1.0.0-beta.15' === ( $metadata['package_version'] ?? null ), 'Installed updater must be genuine beta.15 / protocol 7.' );
+			self::check( 7 === ( $metadata['runtime_protocol'] ?? null ) && '1.0.0-beta.16' === ( $metadata['package_version'] ?? null ), 'Installed updater must be genuine beta.16 / protocol 7.' );
 		}
 		foreach ( array( 'bootstrap.php', 'runtime.php', 'runtime-copy.json' ) as $file ) {
 			self::check( hash_file( 'sha256', $core . $file ) === hash_file( 'sha256', $example . $file ), 'Installed shared updater bytes differ.' );
