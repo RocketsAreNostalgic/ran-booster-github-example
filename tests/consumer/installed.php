@@ -137,7 +137,7 @@ final class Installed {
 		self::install( $container->make( ProspectiveReleaseFacade::class ), $receipt, false );
 	}
 
-	/** Prove both installed beta.15 copies share the active protocol-7 runtime. */
+	/** Prove both installed beta.21 copies share the active protocol-11 runtime. */
 	private static function check_shared_updater(): void {
 		$relative = '/vendor/ran/wp-release-updater/';
 		$core     = WP_PLUGIN_DIR . '/ran-booster' . $relative;
@@ -145,7 +145,7 @@ final class Installed {
 		foreach ( array( $core, $example ) as $copy ) {
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Read immutable installed dependency metadata for the disposable composition proof.
 			$metadata = json_decode( (string) file_get_contents( $copy . 'runtime-copy.json' ), true, 8, JSON_THROW_ON_ERROR );
-			self::check( 7 === ( $metadata['runtime_protocol'] ?? null ) && '1.0.0-beta.15' === ( $metadata['package_version'] ?? null ), 'Installed updater must be genuine beta.15 / protocol 7.' );
+			self::check( 11 === ( $metadata['runtime_protocol'] ?? null ) && '1.0.0-beta.21' === ( $metadata['package_version'] ?? null ), 'Installed updater must be genuine beta.21 / protocol 11.' );
 		}
 		foreach ( array( 'bootstrap.php', 'runtime.php', 'runtime-copy.json' ) as $file ) {
 			self::check( hash_file( 'sha256', $core . $file ) === hash_file( 'sha256', $example . $file ), 'Installed shared updater bytes differ.' );
@@ -156,7 +156,7 @@ final class Installed {
 			throw new RuntimeException( 'Installed updater registrar is unavailable.' );
 		}
 		$diagnostics = $registrar->diagnostics();
-		self::check( is_object( $broker ) && ( $GLOBALS['ran_wp_release_updater_v1_broker'] ?? null ) === $broker && 7 === ( $diagnostics['protocol_version'] ?? null ) && 'active' === ( $diagnostics['state'] ?? null ) && 1 <= ( $diagnostics['candidate_count'] ?? 0 ), 'Both installed copies must share an active protocol-7 broker.' );
+		self::check( is_object( $broker ) && ( $GLOBALS['ran_wp_release_updater_v1_broker'] ?? null ) === $broker && 11 === ( $diagnostics['protocol_version'] ?? null ) && 'active' === ( $diagnostics['state'] ?? null ) && 1 <= ( $diagnostics['candidate_count'] ?? 0 ), 'Both installed copies must share an active protocol-11 broker.' );
 	}
 
 	/** Verify every installed payload file against the archive passed to the updater. */

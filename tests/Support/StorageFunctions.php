@@ -5,11 +5,18 @@ declare(strict_types=1);
 /** @return mixed */
 // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Isolated WordPress option API fixture.
 function get_option( string $option, mixed $default_value = false ): mixed {
+	if ( ! empty( $GLOBALS['ran_booster_github_example_negative_cache'][ $option ] ) ) {
+		return $default_value;
+	}
 	return $GLOBALS['ran_booster_github_example_options'][ $option ] ?? $default_value;
 }
 
 // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Isolated WordPress option API fixture.
 function delete_option( string $option ): bool {
+	if ( ! empty( $GLOBALS['ran_booster_github_example_fail_delete'] ) && 'ran_booster_gh_wf_github_example_setup_records' === $option ) {
+		$GLOBALS['ran_booster_github_example_negative_cache'][ $option ] = true;
+		return false;
+	}
 	unset( $GLOBALS['ran_booster_github_example_options'][ $option ] );
 	return true;
 }

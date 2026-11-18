@@ -16,6 +16,8 @@ parameters:
 		- %env.RAN_BOOSTER_CORE_PATH%/RAN
 	excludePaths:
 		analyseAndScan:
+			# Host-only uninstall double shadows WordPress wp_die with mandatory test arguments.
+			- %env.RAN_BOOSTER_CORE_PATH%/tests/Uninstall/UninstallBoundaryFunctions.php
 			- vendor/*
 			- dist/*
 			- .git/*

@@ -30,7 +30,7 @@ with tempfile.TemporaryDirectory(prefix='ran-example-host-contract-') as directo
     host = Path(directory).resolve()
     (host / 'RAN').mkdir()
     (host / 'tests').mkdir()
-    package = {'name': 'ran/booster-github-provider', 'version': 'v1.0.0-beta.20', 'source': {'reference': 'a' * 40}}
+    package = {'name': 'ran/booster-github-provider', 'version': 'v1.0.0-beta.25', 'source': {'reference': 'a' * 40}}
     lock = json.dumps({'packages': [package]}).encode()
     (host / 'composer.lock').write_bytes(lock)
     bootstrap = "<?php define( 'RAN_BOOSTER_PROVIDER_API_VERSION', 15 );\n"
