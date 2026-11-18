@@ -72,7 +72,8 @@ if ( in_array( $argv[2] ?? '', array( 'modified-copy', 'wrong-invocation', 'wron
 if ( ! $ran_booster_github_example_result ) {
 	throw new \RuntimeException( 'Owned example cleanup failed.' );
 }
-if ( 6 !== count( $GLOBALS['ran_booster_github_example_options'] ) || 2 !== count( $GLOBALS['ran_booster_github_example_transients'] ) || array_diff( $GLOBALS['wpdb']->deleted, array( 'ran_booster_gh_wf_github_example_preview_keys' ) ) || array() === $GLOBALS['wpdb']->deleted ) {
+$ran_booster_github_example_expected_deletions = array_fill( 0, in_array( $argv[2] ?? '', array( 'failed-delete', 'read-error' ), true ) ? 2 : 1, 'ran_booster_gh_wf_github_example_preview_keys' );
+if ( 6 !== count( $GLOBALS['ran_booster_github_example_options'] ) || 2 !== count( $GLOBALS['ran_booster_github_example_transients'] ) || $ran_booster_github_example_expected_deletions !== $GLOBALS['wpdb']->deleted ) {
 	throw new \RuntimeException( 'Cleanup crossed a namespace or retained owned state.' );
 }
 foreach ( array( 'ran_booster_github_provider_release_workflow_setup_records', 'ran_booster_github_provider_release_workflow_assessment_observations', 'ran_booster_github_provider_release_workflow_failure_history', 'ran_booster_release_deployments_setup_records', 'ran_booster_gh_wf_another_setup_records', 'ran_booster_activity' ) as $ran_booster_github_example_retained ) {
