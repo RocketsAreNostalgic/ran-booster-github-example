@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/RocketsAreNostalgic/ran-booster-github-example/compare/v0.2.2...v0.2.3) (2026-11-18)
+
+
+### Bug Fixes
+
+* **deps:** adopt current provider and release updater ([#18](https://github.com/RocketsAreNostalgic/ran-booster-github-example/issues/18)) ([9bf6ffd](https://github.com/RocketsAreNostalgic/ran-booster-github-example/commit/9bf6ffd9724889da0a8b1365e4c4f149ed5fe6f9))
+
 ## [0.2.2](https://github.com/RocketsAreNostalgic/ran-booster-github-example/compare/v0.2.1...v0.2.2) (2026-10-30)
 
 
