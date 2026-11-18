@@ -30,6 +30,8 @@ wp --path="$site_root" core install --url=http://localhost --title='Example CI' 
 if [[ "${RAN_EXAMPLE_CONSUMER_PROOF:-}" == 1 || "${RAN_EXAMPLE_PUBLISHED_CONSUMER_PROOF:-}" == 1 ]]; then
 	wp --path="$site_root" config set RAN_BOOSTER_ENCRYPTED_SECRETS_DIR "$private_root"
 fi
+mkdir -p "$site_root/wp-content/plugins"
+RAN_EXAMPLE_INSTALL_ROOT="$site_root" wp --path="$site_root" eval-file "$repo_root/tests/installation-boundary.php" --use-include
 wp --path="$site_root" plugin install "$RAN_EXAMPLE_CORE_ARCHIVE" --activate
 if [[ "${RAN_EXAMPLE_CONSUMER_PROOF:-}" == 1 || "${RAN_EXAMPLE_PUBLISHED_CONSUMER_PROOF:-}" == 1 ]]; then
 	export RAN_PROVIDER_CONSUMER_DISPOSABLE=1
@@ -49,7 +51,7 @@ if [[ "${RAN_EXAMPLE_CONSUMER_PROOF:-}" == 1 || "${RAN_EXAMPLE_PUBLISHED_CONSUME
 	wp --path="$site_root" plugin deactivate ran-booster-github-example
 	wp --path="$site_root" --user=example-ci eval-file "$repo_root/tests/consumer/installed.php" restore --use-include
 	if [[ "${RAN_EXAMPLE_PUBLISHED_CONSUMER_PROOF:-}" == 1 ]]; then
-		printf 'Published Core and ordinary Example ZIP: discovery, verified installation, adoption, protocol-7 composition, both load orders and incompatible-copy refusals passed.\n'
+		printf 'Published Core and ordinary Example ZIP: discovery, verified installation, adoption, protocol-11 composition, both load orders and incompatible-copy refusals passed.\n'
 	else
 		printf 'Candidate release discovery, verified updater installation, adoption and both load orders passed.\n'
 	fi

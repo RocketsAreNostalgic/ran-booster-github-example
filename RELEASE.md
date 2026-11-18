@@ -69,7 +69,7 @@ contract before installation. Each lane activates the Example and published Core
 ZIPs in disposable WordPress and checks both plugin load orders. A separate
 published-Core consumer proof uses those same genuine release bytes and the normal
 Example package for release discovery, verified installation, explicit adoption,
-consumer operations, protocol-7 shared-runtime checks and incompatible-copy refusal.
+consumer operations, protocol-11 shared-runtime checks and incompatible-copy refusal.
 It also prepares the locked Provider as a candidate and exercises its installed
 consumer in another disposable database; that candidate proof does not replace
 published Core qualification. The terminal `quality` job requires every matrix lane to succeed.

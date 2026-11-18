@@ -44,10 +44,10 @@ second records its outcome. The plugin does not use a private Booster container.
 ## Build and check a local ZIP
 
 Use PHP 8.2–8.5, WordPress 7.0 or newer, and a compatible Booster build
-with Provider beta.20, Provider API 15, and the native-update checkpoints. Booster
+with Provider beta.25, Provider API 15, and the native-update checkpoints. Booster
 and Example must contain matching Provider, Release Updater and Updater Support
-files. The current qualification pairs published Booster beta.41 with genuine
-Release Updater beta.15 (runtime protocol 7). PHP may load either plugin's copy
+files. The current qualification pairs published Booster beta.47 with genuine
+Release Updater beta.21 (runtime protocol 11). PHP may load either plugin's copy
 first; Example allows reuse only when the loaded files match its recorded
 qualified dependency hashes.
 
@@ -89,7 +89,7 @@ load order and remain exact even when Core's public API is unchanged.
 
 A Core-only UI change can require fresh compatibility evidence without changing
 or releasing the Example. Refreshing a qualification fixture changes test
-metadata. Adopting different bundled dependency bytes, as with updater beta.15,
+metadata. Adopting different bundled dependency bytes, as with updater beta.21,
 changes the Example package and requires its own qualified dependency update.
 The broader newer-Core compatibility lane discussed in issue #15 remains separate.
 
